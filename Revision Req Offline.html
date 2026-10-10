@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KM Construction – Revision Request (2 Copies per A4, Grayscale)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px;
+            gap: 16px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: 24px;
+            border: 1px solid #333;
+            background: #333;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 0.02em;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 42px;
+        }
+
+        .btn:hover {
+            background: #1a1a1a;
+            border-color: #1a1a1a;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .btn-outline {
+            background: #fff;
+            color: #333;
+            border: 1px solid #333;
+        }
+
+        .btn-outline:hover {
+            background: #f0f0f0;
+        }
+
+        .btn svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+           A4 PORTRAIT PAGE (210 × 297 mm) = 794 × 1123 px @ 96dpi
+           Contains TWO stacked A5 landscape copies (794 × 559 px each)
+           ============================================================ */
+        .a4-page {
+            width: 794px;
+            height: 1123px;
+            background: #ffffff;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* each A5 copy sits inside the A4 page */
+        .print-sheet {
+            width: 794px;
+            height: 559px;
+            background: #ffffff;
+            padding: 28px 42px 18px 42px;
+            color: #1a1a1e;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /* dashed cut line between the two copies */
+        .cut-line {
+            height: 0;
+            border-top: 1px dashed #b0b0b0;
+            position: relative;
+            margin: 2px 0;
+            flex-shrink: 0;
+        }
+
+        .cut-line::after {
+            content: "✂  cut here";
+            position: absolute;
+            right: 10px;
+            top: -7px;
+            background: #ffffff;
+            padding: 0 6px;
+            font-size: 8px;
+            color: #999;
+            letter-spacing: 0.06em;
+        }
+
+        /* ---------- header ---------- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 5px;
+            border-bottom: 1.5pt solid #333;
+            margin-bottom: 7px;
+            flex-shrink: 0;
+        }
+
+        .company {
+            font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+            font-size: 19px;
+            font-weight: 700;
+            color: #111;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+        }
+
+        .company-contact {
+            font-size: 9px;
+            color: #4a4a4a;
+            line-height: 1.4;
+            margin-top: 3px;
+            letter-spacing: 0.01em;
+        }
+
+        .header-right {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .doc-type {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #111;
+            letter-spacing: 0.01em;
+        }
+
+        .date-line {
+            font-size: 9.5px;
+            color: #444;
+            margin-top: 5px;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: baseline;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        .date-line .date-label {
+            color: #555;
+        }
+
+        .date-line .date-blank {
+            display: inline-block;
+            min-width: 32px;
+            border-bottom: 0.6pt solid #555;
+            height: 15px;
+        }
+
+        .date-line .date-slash {
+            color: #666;
+            margin: 0 2px;
+        }
+
+        /* ---------- section ---------- */
+        .section {
+            margin-bottom: 5px;
+            flex-shrink: 0;
+        }
+
+        .section-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            margin-bottom: 5px;
+        }
+
+        /* ---------- policy note (grayscale) ---------- */
+        .policy-note {
+            font-size: 9px;
+            color: #333;
+            background: #f3f3f3;
+            border-left: 2pt solid #888;
+            padding: 4px 8px;
+            margin-bottom: 4px;
+            line-height: 1.4;
+            letter-spacing: 0.01em;
+            border-radius: 1px;
+        }
+
+        .policy-note strong {
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        /* ---------- info grid (FIXED two-column layout) ---------- */
+        .info-grid {
+            display: flex;
+            flex-direction: row;
+            gap: 36px;
+            width: 100%;
+        }
+
+        .info-col {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1 1 0;
+            min-width: 0;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            font-size: 10px;
+            line-height: 18px;
+            height: 18px;
+        }
+
+        .info-row .k {
+            color: #555;
+            font-weight: 400;
+            width: 70px;
+            flex-shrink: 0;
+            font-size: 9.5px;
+            letter-spacing: 0.01em;
+        }
+
+        .info-row .v {
+            flex: 1 1 auto;
+            border-bottom: 0.6pt solid #777;
+            height: 16px;
+            min-width: 0;
+        }
+
+        /* ---------- services checklist with prices ---------- */
+        .services-checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px 18px;
+            margin-top: 2px;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 10px;
+            line-height: 1.45;
+            padding: 3px 5px;
+        }
+
+        .service-item .tick-box {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border: 1pt solid #777;
+            background: #fff;
+            flex-shrink: 0;
+            border-radius: 1px;
+        }
+
+        .service-item .svc-name {
+            font-weight: 400;
+            color: #333;
+            font-size: 10px;
+            letter-spacing: 0;
+            flex-shrink: 0;
+        }
+
+        .service-item .svc-leader {
+            display: none;
+        }
+
+        .service-item .svc-price {
+            font-weight: 500;
+            color: #444;
+            font-size: 10px;
+            flex-shrink: 0;
+            min-width: 50px;
+            text-align: right;
+            letter-spacing: 0;
+            margin-left: auto;
+        }
+
+        /* ---------- total line ---------- */
+        .total-line {
+            display: flex;
+            justify-content: flex-end;
+            align-items: baseline;
+            gap: 8px;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 0.8pt solid #999;
+            font-size: 10px;
+        }
+
+        .total-line .total-label {
+            font-weight: 700;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 9px;
+        }
+
+        .total-line .total-blank {
+            display: inline-block;
+            min-width: 90px;
+            border-bottom: 0.8pt solid #555;
+            height: 14px;
+        }
+
+        /* ---------- notes (enlarged) ---------- */
+        .notes-box {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .notes-box .line {
+            flex: 1 1 0;
+            border-bottom: 0.6pt solid #888;
+            min-height: 24px;
+            margin-bottom: 4px;
+            width: 100%;
+        }
+
+        .notes-box .line:last-child {
+            margin-bottom: 0;
+        }
+
+        .notes-section {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 7px;
+        }
+
+        /* ---------- time (single line) ---------- */
+        .time-single {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            font-size: 10px;
+            line-height: 1.45;
+        }
+
+        .time-single .k {
+            color: #555;
+            font-weight: 400;
+            flex-shrink: 0;
+            font-size: 9.5px;
+            letter-spacing: 0.01em;
+        }
+
+        .time-single .v {
+            flex: 1;
+            border-bottom: 0.6pt solid #777;
+            min-height: 17px;
+        }
+
+        .time-single .time-sep {
+            color: #999;
+            font-weight: 400;
+            flex-shrink: 0;
+            padding: 0 2px;
+        }
+
+        /* ---------- acknowledgment ---------- */
+        .ack-text {
+            font-size: 9.5px;
+            color: #444;
+            margin: 0;
+            line-height: 1.4;
+            letter-spacing: 0.01em;
+        }
+
+        /* ---------- signature ---------- */
+        .signature-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: auto;
+            padding-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .sig-block {
+            text-align: center;
+            width: 45%;
+            max-width: 200px;
+        }
+
+        .sig-line {
+            border-top: 1.1pt solid #666;
+            margin: 14px 0 4px;
+        }
+
+        .sig-label {
+            font-size: 9px;
+            color: #555;
+            line-height: 1.4;
+            letter-spacing: 0.02em;
+        }
+
+        .sig-label strong {
+            color: #111;
+            display: block;
+            font-size: 9.5px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        /* ---------- footnote ---------- */
+        .footnote {
+            font-size: 7.5px;
+            color: #777;
+            text-align: center;
+            padding-top: 4px;
+            border-top: 0.6pt dotted #999;
+            margin-top: 4px;
+            letter-spacing: 0.02em;
+            flex-shrink: 0;
+        }
+
+        /* ---------- off-screen capture container ---------- */
+        #pdfCapture {
+            position: fixed;
+            left: -10000px;
+            top: 0;
+            width: 794px;
+            height: 1123px;
+            background: #ffffff;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* ---------- mobile ---------- */
+        @media screen and (max-width: 800px) {
+            .a4-page {
+                width: 100%;
+                height: auto;
+                border-radius: 4px;
+            }
+
+            .print-sheet {
+                width: 100%;
+                height: auto;
+                min-height: 559px;
+                padding: 20px;
+            }
+
+            .info-grid,
+            .services-checklist {
+                grid-template-columns: 1fr;
+                gap: 3px;
+            }
+
+            .info-grid {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .services-checklist {
+                gap: 5px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .header-right {
+                text-align: left;
+                width: 100%;
+            }
+
+            .date-line {
+                justify-content: flex-start;
+            }
+
+            .time-single {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* ---------- print (A4 portrait) ---------- */
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        @media print {
+            html, body {
+                background: #fff;
+                padding: 0;
+                margin: 0;
+                gap: 0;
+                min-height: 0;
+                display: block;
+            }
+
+            .toolbar {
+                display: none !important;
+            }
+
+            .a4-page {
+                width: 210mm;
+                height: 297mm;
+                min-height: 0;
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                padding: 0;
+                page-break-after: avoid;
+                page-break-inside: avoid;
+                overflow: hidden;
+            }
+
+            .print-sheet {
+                width: 100%;
+                min-height: 0;
+                padding: 28px 42px 18px 42px;
+                overflow: hidden;
+            }
+
+            .cut-line::after {
+                background: #fff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .policy-note {
+                background: #f3f3f3 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <button class="btn" id="exportBtn" onclick="exportToPDF()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3v12"/>
+                <path d="M7 8l5-5 5 5"/>
+                <path d="M5 21h14"/>
+            </svg>
+            Export to PDF
+        </button>
+        <button class="btn btn-outline" onclick="window.print()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 9V2h12v7"/>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Print
+        </button>
+    </div>
+
+    <div class="a4-page" id="a4Page">
+
+        <!-- ============ COPY 1 ============ -->
+        <div class="print-sheet" id="printSheet1">
+
+            <div class="header">
+                <div>
+                    <div class="company">KM Construction &amp; Interiors</div>
+                    <div class="company-contact">017, Uttarachandi Road, Athgarh · +91 70088 09883 · kmconstructions99@gmail.com</div>
+                </div>
+                <div class="header-right">
+                    <div class="doc-type">Revision Request</div>
+                    <div class="date-line">
+                        <span class="date-label">Date:</span>
+                        <span class="date-blank"></span>
+                        <span class="date-slash">/</span>
+                        <span class="date-blank"></span>
+                        <span class="date-slash">/</span>
+                        <span class="date-blank" style="min-width: 48px;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-label">Client &amp; Project Reference</div>
+                <div class="info-grid">
+                    <div class="info-col">
+                        <div class="info-row"><span class="k">Client name</span><span class="v"></span></div>
+                        <div class="info-row"><span class="k">Phone</span><span class="v"></span></div>
+                    </div>
+                    <div class="info-col">
+                        <div class="info-row"><span class="k">Project ID</span><span class="v"></span></div>
+                        <div class="info-row"><span class="k">Revision No.</span><span class="v"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-label">Select Services Needing Revision &amp; Applicable Charges</div>
+                <div class="policy-note">
+                    <strong>REVISION POLICY:</strong> The first <strong>2 revisions are FREE of charge</strong>. Revision charges listed below apply from the <strong>3rd revision onwards</strong>.
+                </div>
+                <div class="services-checklist">
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Floor Plan Design</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 500</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Structural Design</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 500</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">3D Exterior / Elevation</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 1,000</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Interior Design</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 1,000</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Electrical &amp; Lighting</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 500</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Plumbing &amp; Drainage</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 500</span>
+                    </div>
+                </div>
+                <div class="total-line">
+                    <span class="total-label">Total Revision Charge</span>
+                    <span class="total-blank"></span>
+                </div>
+            </div>
+
+            <div class="section notes-section">
+                <div class="section-label">Additional Notes / Change Description</div>
+                <div class="notes-box">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-bottom:5px;">
+                <div class="section-label">Estimated Time Required</div>
+                <div class="time-single">
+                    <span class="k">Estimated time:</span>
+                    <span class="v"></span>
+                    <span class="k">days</span>
+                    <span class="time-sep">|</span>
+                    <span class="k">Completion date:</span>
+                    <span class="v"></span>
+                </div>
+            </div>
+
+            <div class="section" style="margin-bottom:4px;">
+                <div class="section-label">Client Acknowledgment</div>
+                <div class="ack-text">I confirm the above revision details and accept the applicable charges and quotation terms.</div>
+            </div>
+
+            <div class="signature-area">
+                <div class="sig-block">
+                    <div class="sig-line"></div>
+                    <div class="sig-label">
+                        <strong>Client Signature</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footnote">
+                KM Construction and Interiors · 017, Uttarachandi Road, Athgarh · +91 7008809883 · kmconstructions99@gmail.com
+            </div>
+
+        </div>
+
+        <!-- ============ CUT LINE ============ -->
+        <div class="cut-line"></div>
+
+        <!-- ============ COPY 2 ============ -->
+        <div class="print-sheet" id="printSheet2">
+
+            <div class="header">
+                <div>
+                    <div class="company">KM Construction &amp; Interiors</div>
+                    <div class="company-contact">017, Uttarachandi Road, Athgarh · +91 70088 09883 · kmconstructions99@gmail.com</div>
+                </div>
+                <div class="header-right">
+                    <div class="doc-type">Revision Request</div>
+                    <div class="date-line">
+                        <span class="date-label">Date:</span>
+                        <span class="date-blank"></span>
+                        <span class="date-slash">/</span>
+                        <span class="date-blank"></span>
+                        <span class="date-slash">/</span>
+                        <span class="date-blank" style="min-width: 48px;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-label">Client &amp; Project Reference</div>
+                <div class="info-grid">
+                    <div class="info-col">
+                        <div class="info-row"><span class="k">Client name</span><span class="v"></span></div>
+                        <div class="info-row"><span class="k">Phone</span><span class="v"></span></div>
+                    </div>
+                    <div class="info-col">
+                        <div class="info-row"><span class="k">Project ID</span><span class="v"></span></div>
+                        <div class="info-row"><span class="k">Revision No.</span><span class="v"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-label">Select Services Needing Revision &amp; Applicable Charges</div>
+                <div class="policy-note">
+                    <strong>REVISION POLICY:</strong> The first <strong>2 revisions are FREE of charge</strong>. Revision charges listed below apply from the <strong>3rd revision onwards</strong>.
+                </div>
+                <div class="services-checklist">
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Floor Plan Design</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 500</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Structural Design</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 500</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">3D Exterior / Elevation</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 1,000</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Interior Design</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 1,000</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Electrical &amp; Lighting</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 500</span>
+                    </div>
+                    <div class="service-item">
+                        <span class="tick-box"></span>
+                        <span class="svc-name">Plumbing &amp; Drainage</span>
+                        <span class="svc-leader"></span>
+                        <span class="svc-price">₹ 500</span>
+                    </div>
+                </div>
+                <div class="total-line">
+                    <span class="total-label">Total Revision Charge</span>
+                    <span class="total-blank"></span>
+                </div>
+            </div>
+
+            <div class="section notes-section">
+                <div class="section-label">Additional Notes / Change Description</div>
+                <div class="notes-box">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-bottom:5px;">
+                <div class="section-label">Estimated Time Required</div>
+                <div class="time-single">
+                    <span class="k">Estimated time:</span>
+                    <span class="v"></span>
+                    <span class="k">days</span>
+                    <span class="time-sep">|</span>
+                    <span class="k">Completion date:</span>
+                    <span class="v"></span>
+                </div>
+            </div>
+
+            <div class="section" style="margin-bottom:4px;">
+                <div class="section-label">Client Acknowledgment</div>
+                <div class="ack-text">I confirm the above revision details and accept the applicable charges and quotation terms.</div>
+            </div>
+
+            <div class="signature-area">
+                <div class="sig-block">
+                    <div class="sig-line"></div>
+                    <div class="sig-label">
+                        <strong>Client Signature</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footnote">
+                KM Construction and Interiors · 017, Uttarachandi Road, Athgarh · +91 7008809883 · kmconstructions99@gmail.com
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        async function exportToPDF() {
+            const btn = document.getElementById('exportBtn');
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = 'Generating…';
+
+            try {
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+
+                const source = document.getElementById('a4Page');
+                const clone = source.cloneNode(true);
+
+                clone.removeAttribute('id');
+                clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+
+                clone.style.width = '794px';
+                clone.style.height = '1123px';
+                clone.style.minHeight = '1123px';
+                clone.style.boxShadow = 'none';
+                clone.style.borderRadius = '0';
+                clone.style.margin = '0';
+                clone.style.position = 'relative';
+                clone.style.overflow = 'hidden';
+
+                clone.querySelectorAll('.print-sheet').forEach(sheet => {
+                    sheet.style.width = '794px';
+                    sheet.style.height = '559px';
+                    sheet.style.minHeight = '559px';
+                    sheet.style.overflow = 'hidden';
+                });
+
+                const holder = document.createElement('div');
+                holder.id = 'pdfCapture';
+                holder.style.width = '794px';
+                holder.style.height = '1123px';
+                holder.appendChild(clone);
+                document.body.appendChild(holder);
+
+                await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+                const canvas = await html2canvas(clone, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    width: 794,
+                    height: 1123,
+                    windowWidth: 1200,
+                    windowHeight: 1123
+                });
+
+                document.body.removeChild(holder);
+
+                const imgData = canvas.toDataURL('image/jpeg', 0.98);
+
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4',
+                    compress: true
+                });
+
+                pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+
+                pdf.save('KM_Revision_Request_2Copies_A4.pdf');
+            } catch (err) {
+                console.error('PDF export failed:', err);
+                alert('PDF export failed. Please use the Print button and choose "Save as PDF".');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+            }
+        }
+    </script>
+
+</body>
+</html>

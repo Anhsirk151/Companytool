@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>KM Construction – Site Visit Bill</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        :root {
+            --ink: #1a1a1e;
+            --muted: #6b6b6b;
+            --faint: #9a9ea6;
+            --line: #e2e2e2;
+            --line-soft: #f0f0f0;
+            --bg: #eceef1;
+            --card: #fff;
+            --accent: #17325c;
+            --accent-soft: #eef2f7;
+            --gold: #a6822f;
+            --danger: #b3261e;
+            --radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+        }
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            font-size: 16px;
+            line-height: 1.5;
+            padding: 16px 12px calc(16px + env(safe-area-inset-bottom));
+            padding-top: calc(16px + env(safe-area-inset-top));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        .app {
+            max-width: 780px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* ---------- top bar ---------- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+        .brand img {
+            height: 38px;
+            width: auto;
+            flex-shrink: 0;
+        }
+        .brand h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+        .brand small {
+            font-size: 11px;
+            color: var(--muted);
+            display: block;
+            letter-spacing: 0.02em;
+        }
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 28px;
+            border: 1px solid var(--line);
+            background: var(--card);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.15s;
+            color: var(--ink);
+            font-family: inherit;
+            white-space: nowrap;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover { background: #0f2547; }
+        .btn-outline { background: transparent; }
+        .btn-outline:hover { background: #f5f5f5; }
+        .btn-gold {
+            background: #fef6e0;
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .btn-gold:hover {
+            background: var(--gold);
+            color: #fff;
+        }
+
+        /* ---------- cards ---------- */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 22px 20px;
+            border: 1px solid #f0f0f0;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.01em;
+        }
+        .section-title .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* ---------- form ---------- */
+        .field-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 18px;
+        }
+        .field-grid .full { grid-column: span 2; }
+        @media (max-width: 600px) {
+            .field-grid { grid-template-columns: 1fr; gap: 14px; }
+            .field-grid .full { grid-column: span 1; }
+        }
+        .field-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+        }
+        .field-item label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            letter-spacing: 0.02em;
+        }
+        .field-item label .req { color: var(--danger); margin-left: 2px; }
+        .field-item input,
+        .field-item select,
+        .field-item textarea {
+            padding: 11px 14px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #fcfcfc;
+            transition: 0.15s;
+            width: 100%;
+            color: var(--ink);
+            min-height: 46px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .field-item input:focus,
+        .field-item select:focus,
+        .field-item textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(23, 50, 92, 0.08);
+        }
+        .field-item textarea {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        .calc-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .calc-row input { flex: 1; min-width: 80px; }
+        .calc-row .unit {
+            font-size: 13px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        /* ---------- summary strip ---------- */
+        .summary-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            padding: 14px 18px;
+            background: var(--accent-soft);
+            border-radius: 10px;
+            margin-top: 18px;
+            border-left: 3px solid var(--accent);
+        }
+        .summary-strip .item {
+            font-size: 14px;
+            color: var(--muted);
+        }
+        .summary-strip .item strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ---------- mini bill preview ---------- */
+        .mini-bill {
+            margin-top: 20px;
+            border-top: 1px solid var(--line-soft);
+            padding-top: 16px;
+        }
+        .mini-bill table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .mini-bill th {
+            text-align: left;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            padding: 6px 6px 6px 0;
+            border-bottom: 1px solid var(--line);
+        }
+        .mini-bill th.right,
+        .mini-bill td.right { text-align: right; }
+        .mini-bill td {
+            padding: 8px 6px 8px 0;
+            border-bottom: 1px solid var(--line-soft);
+            vertical-align: middle;
+        }
+        .mini-bill .total-row td {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--accent);
+            border-top: 2px solid var(--accent);
+            border-bottom: none;
+            padding-top: 12px;
+        }
+
+        /* ============================================================ */
+        /*  PDF / BILL DOC – A5 LANDSCAPE, 2-COLUMN, MINIMAL B&W        */
+        /* ============================================================ */
+        .pdf-doc {
+            display: none;
+            background: #fff;
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: #000;
+            font-size: 8.5pt;
+            line-height: 1.45;
+            padding: 0;
+            max-width: 100%;
+            min-height: 490px;
+            position: relative;
+        }
+
+        /* ---------- letterhead ---------- */
+        .pdf-doc .pdf-letterhead {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #000;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+        .pdf-doc .pdf-letterhead-left {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            min-width: 0;
+        }
+        .pdf-doc .pdf-letterhead img {
+            height: 36px;
+            width: auto;
+            flex-shrink: 0;
+            /* LOGO KEEPS ORIGINAL COLOR */
+        }
+        .pdf-doc .pdf-company-name {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 12.5pt;
+            font-weight: 700;
+            color: #000;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+        }
+        .pdf-doc .pdf-company-tag {
+            font-size: 6pt;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+        .pdf-doc .pdf-company-details {
+            font-size: 6.5pt;
+            color: #333;
+            line-height: 1.45;
+            margin-top: 4px;
+        }
+        .pdf-doc .pdf-company-details strong {
+            color: #000;
+            font-weight: 600;
+        }
+        .pdf-doc .pdf-letterhead-right {
+            text-align: right;
+            font-size: 7pt;
+            color: #333;
+            line-height: 1.5;
+            flex-shrink: 0;
+        }
+        .pdf-doc .pdf-letterhead-right .doc-type {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 12pt;
+            font-weight: 700;
+            color: #000;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+            letter-spacing: 0.08em;
+        }
+        .pdf-doc .pdf-letterhead-right .ref {
+            font-size: 7pt;
+            color: #333;
+            margin-bottom: 2px;
+            letter-spacing: 0.02em;
+        }
+
+        /* ---------- two-column body ---------- */
+        .pdf-doc .pdf-body {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 18px;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+        .pdf-doc .pdf-col-left,
+        .pdf-doc .pdf-col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* ---------- parties ---------- */
+        .pdf-doc .pdf-parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .pdf-doc .pdf-parties-block h4 {
+            font-size: 6.5pt;
+            font-weight: 600;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 3px;
+        }
+        .pdf-doc .pdf-parties-block .name {
+            font-size: 9pt;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 1px;
+        }
+        .pdf-doc .pdf-parties-block .line {
+            font-size: 7pt;
+            color: #333;
+            line-height: 1.45;
+        }
+        .pdf-doc .pdf-parties-block .line strong {
+            color: #000;
+            font-weight: 600;
+        }
+
+        /* ---------- section titles ---------- */
+        .pdf-doc .pdf-section-title {
+            font-size: 7pt;
+            font-weight: 700;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+        }
+
+        /* ---------- table ---------- */
+        .pdf-doc .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 7.5pt;
+            line-height: 1.35;
+        }
+        .pdf-doc .pdf-table th {
+            background: transparent;
+            color: #000;
+            text-align: left;
+            font-size: 6.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0 6px 5px 0;
+            border-bottom: 1px solid #000;
+        }
+        .pdf-doc .pdf-table th.right,
+        .pdf-doc .pdf-table td.right { text-align: right; }
+        .pdf-doc .pdf-table td {
+            padding: 6px 6px 6px 0;
+            border-bottom: 1px solid #ccc;
+            vertical-align: middle;
+            color: #000;
+        }
+        .pdf-doc .pdf-table .total-row td {
+            background: transparent !important;
+            font-weight: 700;
+            font-size: 8.5pt;
+            color: #000;
+            border-top: 1px solid #000;
+            border-bottom: none;
+            padding: 8px 6px 4px 0;
+        }
+        .pdf-doc .pdf-table .total-row .grand {
+            font-size: 10pt;
+        }
+
+        /* ---------- amount in words ---------- */
+        .pdf-doc .amount-words {
+            font-size: 7pt;
+            color: #000;
+            padding: 0;
+            margin: 8px 0 0;
+            line-height: 1.45;
+        }
+        .pdf-doc .amount-words strong {
+            font-weight: 700;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-size: 6.5pt;
+            margin-right: 4px;
+        }
+        .pdf-doc .pdf-mini-note {
+            font-size: 6.5pt;
+            color: #333;
+            font-style: italic;
+            margin: 6px 0 0;
+        }
+
+        /* ---------- notes box (THIN LINE) ---------- */
+        .pdf-doc .pdf-notes-box {
+            border: 0.5pt solid #999;
+            border-radius: 2px;
+            padding: 10px 12px;
+            min-height: 150px;
+            background: #fff;
+        }
+        .pdf-doc .pdf-notes-box .notes-label {
+            font-size: 6.5pt;
+            font-weight: 700;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+        }
+        .pdf-doc .pdf-notes-box .notes-content {
+            font-size: 7pt;
+            color: #000;
+            line-height: 1.55;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .pdf-doc .pdf-notes-box .notes-content .placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        /* ---------- signatures (THIN LINES) ---------- */
+        .pdf-doc .pdf-signatures {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 40px;
+            padding-top: 0;
+        }
+        .pdf-doc .pdf-sig-block {
+            text-align: center;
+        }
+        .pdf-doc .pdf-sig-line {
+            border-top: 0.5pt solid #999;
+            margin: 30px 30px 5px;
+        }
+        .pdf-doc .pdf-sig-label {
+            font-size: 6.5pt;
+            color: #333;
+            font-weight: 400;
+        }
+        .pdf-doc .pdf-sig-label strong {
+            color: #000;
+            display: block;
+            font-size: 7pt;
+            margin-bottom: 1px;
+            font-weight: 600;
+        }
+
+        /* ---------- footer (fixed at bottom) ---------- */
+        .pdf-doc .pdf-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding-top: 6px;
+            border-top: 1px solid #000;
+            font-size: 6pt;
+            color: #333;
+            text-align: center;
+            letter-spacing: 0.04em;
+        }
+
+        /* ============================================================ */
+        /*  PRINT – A5 LANDSCAPE, B&W (LOGO KEEPS COLOR)                */
+        /* ============================================================ */
+        @media print {
+            @page {
+                size: A5 landscape;
+                margin: 8mm 10mm;
+            }
+            html, body {
+                background: #fff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-size: 8.5pt !important;
+                width: auto !important;
+                min-height: auto !important;
+                display: block !important;
+                height: auto !important;
+                overflow: hidden !important;
+                color: #000 !important;
+            }
+            .app, .top-bar, .actions, .btn, .card, .footer-note {
+                display: none !important;
+            }
+            .pdf-doc {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                font-size: 8.5pt;
+                line-height: 1.45;
+                padding: 0 !important;
+                page-break-after: avoid !important;
+                page-break-inside: avoid !important;
+                color: #000 !important;
+                height: 132mm !important;
+                min-height: 132mm !important;
+                max-height: 132mm !important;
+                position: relative !important;
+                box-sizing: border-box !important;
+            }
+            /* Force true black & white for text */
+            .pdf-doc * {
+                color: #000 !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+            /* LOGO KEEPS ORIGINAL COLOR — no grayscale filter */
+            .pdf-doc img {
+                filter: none !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            /* Main borders — solid black */
+            .pdf-doc .pdf-table th,
+            .pdf-doc .pdf-sig-line,
+            .pdf-doc .pdf-letterhead,
+            .pdf-doc .pdf-footer {
+                border-color: #000 !important;
+            }
+            /* Thin lines — light gray for softness */
+            .pdf-doc .pdf-notes-box {
+                border-color: #999 !important;
+            }
+            .pdf-doc .pdf-table td {
+                border-bottom-color: #ccc !important;
+            }
+            /* Secondary text — dark gray */
+            .pdf-doc .pdf-company-tag,
+            .pdf-doc .pdf-company-details,
+            .pdf-doc .pdf-letterhead-right,
+            .pdf-doc .pdf-parties-block h4,
+            .pdf-doc .pdf-parties-block .line,
+            .pdf-doc .pdf-sig-label,
+            .pdf-doc .pdf-footer {
+                color: #333 !important;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .pdf-doc .pdf-table thead { display: table-header-group; }
+            .pdf-doc .pdf-table tr { break-inside: avoid; page-break-inside: avoid; }
+            .pdf-doc .pdf-letterhead,
+            .pdf-doc .pdf-parties,
+            .pdf-doc .pdf-signatures,
+            .pdf-doc .pdf-notes-box,
+            .pdf-doc .pdf-body {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+        @media (max-width: 640px) {
+            .card { padding: 18px 14px; }
+            .summary-strip { padding: 12px 14px; gap: 8px 16px; }
+            .summary-strip .item { font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!--  APP – DATA ENTRY + PREVIEW                                  -->
+<!-- ============================================================ -->
+<div class="app">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+        <div class="brand">
+            <img src="https://raw.githubusercontent.com/Anhsirk151/kmconstruction-assets/52877915152457b9c850a50ac46049d545980b9f/KM%20Construction%20and%20interiors%20Logo%20new%2020253.png" alt="KM Construction">
+            <div>
+                <h2>KM Construction</h2>
+                <small>Site Visit Bill</small>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="btn btn-outline" onclick="KMCI_Bill.resetForm()">Clear</button>
+            <button class="btn btn-gold" onclick="KMCI_Bill.loadDemo()">★ Demo</button>
+            <button class="btn btn-primary" onclick="KMCI_Bill.generateBill()">Generate Bill →</button>
+        </div>
+    </div>
+
+    <!-- Card 1: Client details -->
+    <div class="card">
+        <div class="section-title"><span class="num">1</span> Client Details</div>
+        <div class="field-grid">
+            <div class="field-item">
+                <label for="clientName">Full name <span class="req">*</span></label>
+                <input type="text" id="clientName" placeholder="e.g. Rahul Sharma" value="Rahul Sharma">
+            </div>
+            <div class="field-item">
+                <label for="clientPhone">Phone <span class="req">*</span></label>
+                <input type="tel" id="clientPhone" placeholder="98765 43210" value="98765 43210">
+            </div>
+            <div class="field-item full">
+                <label for="clientAddress">Address</label>
+                <input type="text" id="clientAddress" placeholder="City, State, PIN" value="Cuttack, Odisha - 753012">
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 2: Visit details -->
+    <div class="card">
+        <div class="section-title"><span class="num">2</span> Visit Details</div>
+        <div class="field-grid">
+            <div class="field-item full">
+                <label for="siteLocation">Site location</label>
+                <input type="text" id="siteLocation" placeholder="Plot / landmark, area, city" value="Plot No. 42, Uttarachandi Road, Athgarh">
+            </div>
+            <div class="field-item">
+                <label for="visitDate">Visit date <span class="req">*</span></label>
+                <input type="date" id="visitDate">
+            </div>
+            <div class="field-item">
+                <label for="distanceKm">Distance from Athgarh (km) <span class="req">*</span></label>
+                <div class="calc-row">
+                    <input type="number" id="distanceKm" placeholder="e.g. 18" min="0" step="0.1" value="18">
+                    <span class="unit">km</span>
+                </div>
+            </div>
+            <div class="field-item full">
+                <label for="siteNotes">Site visit notes (measurements, observations, etc.)</label>
+                <textarea id="siteNotes" rows="4" placeholder="e.g. Plot size: 40×30 ft&#10;Front road width: 20 ft&#10;Boundary wall: existing on 3 sides&#10;Soil type: laterite, good bearing capacity&#10;Existing structure: none&#10;Water source: borewell available&#10;Power: nearby pole available&#10;Other observations..."></textarea>
+            </div>
+        </div>
+
+        <!-- Summary strip -->
+        <div class="summary-strip" id="summaryStrip">
+            <span class="item">Base fee: <strong>₹1,000</strong> <span style="font-size:11px;color:var(--faint);">(first 10 km)</span></span>
+            <span class="item">Distance: <strong id="distanceDisplay">18.0 km</strong></span>
+            <span class="item">Travel: <strong id="travelDisplay">₹450</strong></span>
+            <span class="item">Total: <strong id="totalDisplay">₹1,450</strong></span>
+        </div>
+    </div>
+
+    <!-- Card 3: Mini bill preview -->
+    <div class="card">
+        <div class="section-title"><span class="num">3</span> Bill Preview</div>
+        <div class="mini-bill">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:5%;">#</th>
+                        <th style="width:50%;">Description</th>
+                        <th style="width:15%;" class="right">Rate (₹)</th>
+                        <th style="width:15%;" class="right">Qty</th>
+                        <th style="width:15%;" class="right">Amount (₹)</th>
+                    </tr>
+                </thead>
+                <tbody id="miniBillBody">
+                    <!-- dynamic -->
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="4" class="right">Total Payable</td>
+                        <td class="right"><span id="miniGrandTotal">₹1,450</span></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer note -->
+    <div class="footer-note" style="font-size:11px;color:var(--muted);text-align:center;padding:10px 6px 0;border-top:1px solid var(--line-soft);margin-top:10px;">
+        KM Construction and Interiors · 017, Uttarachandi Road, Athgarh · +91 7008809883 · kmconstructions99@gmail.com
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  PDF / BILL DOCUMENT (hidden on screen, shown on print)      -->
+<!-- ============================================================ -->
+<div class="pdf-doc" id="pdfDoc">
+    <!-- Letterhead -->
+    <div class="pdf-letterhead">
+        <div class="pdf-letterhead-left">
+            <img src="https://raw.githubusercontent.com/Anhsirk151/kmconstruction-assets/52877915152457b9c850a50ac46049d545980b9f/KM%20Construction%20and%20interiors%20Logo%20new%2020253.png" alt="KM Construction">
+            <div>
+                <div class="pdf-company-name">KM Construction &amp; Interiors</div>
+                <div class="pdf-company-tag">Architecture · Structure · Interiors · Approvals</div>
+                <div class="pdf-company-details">
+                    <strong>Registered Office</strong> &nbsp;017, Uttarachandi Road, Athgarh<br>
+                    <strong>Phone</strong> +91 70088 09883 &nbsp;·&nbsp; <strong>Email</strong> kmconstructions99@gmail.com
+                </div>
+            </div>
+        </div>
+        <div class="pdf-letterhead-right">
+            <div class="doc-type">Bill</div>
+            <div class="ref" id="pdfRef">SV/YYMMDDHHMM</div>
+            <div>Date &nbsp;<span id="pdfDate">—</span></div>
+        </div>
+    </div>
+
+    <!-- Two-column body -->
+    <div class="pdf-body">
+        <!-- LEFT: parties + bill table -->
+        <div class="pdf-col-left">
+            <div class="pdf-parties">
+                <div class="pdf-parties-block">
+                    <h4>Bill To</h4>
+                    <div class="name" id="pdfClientName">—</div>
+                    <div class="line" id="pdfClientPhone">—</div>
+                    <div class="line" id="pdfClientAddress">—</div>
+                </div>
+                <div class="pdf-parties-block">
+                    <h4>Site Details</h4>
+                    <div class="line"><strong>Location</strong> <span id="pdfSiteLocation">—</span></div>
+                    <div class="line"><strong>Distance</strong> <span id="pdfDistance">—</span></div>
+                    <div class="line"><strong>Visit Date</strong> <span id="pdfVisitDate">—</span></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="pdf-section-title">Bill Details</div>
+                <table class="pdf-table">
+                    <thead>
+                        <tr>
+                            <th style="width:6%;">#</th>
+                            <th style="width:42%;">Description</th>
+                            <th style="width:16%;" class="right">Rate</th>
+                            <th style="width:16%;" class="right">Qty</th>
+                            <th style="width:20%;" class="right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pdfBillBody">
+                        <!-- dynamic -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="4" class="right">Total Payable</td>
+                            <td class="right"><span class="grand" id="pdfGrandTotal">₹0</span></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="amount-words">
+                    <strong>Amount in words</strong> <span id="pdfWords">Zero Rupees Only</span>
+                </div>
+                <div class="pdf-mini-note">
+                    Payment due on receipt
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: notes box -->
+        <div class="pdf-col-right">
+            <div>
+                <div class="pdf-section-title">Site Visit Notes</div>
+                <div class="pdf-notes-box">
+                    <div class="notes-label">Observations / Measurements</div>
+                    <div class="notes-content" id="pdfSiteNotesContent">
+                        <span class="placeholder">Site measurements, observations, and notes will appear here.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="pdf-signatures">
+        <div class="pdf-sig-block">
+            <div class="pdf-sig-line"></div>
+            <div class="pdf-sig-label"><strong>Client Signature</strong>Name &amp; Date</div>
+        </div>
+        <div class="pdf-sig-block">
+            <div class="pdf-sig-line"></div>
+            <div class="pdf-sig-label"><strong>For KM Construction &amp; Interiors</strong>Authorised Signatory</div>
+        </div>
+    </div>
+
+    <!-- Footer (fixed at bottom of A5 page) -->
+    <div class="pdf-footer">
+        KM Construction &amp; Interiors · 017, Uttarachandi Road, Athgarh · +91 70088 09883
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  SCRIPT                                                       -->
+<!-- ============================================================ -->
+<script>
+    (function() {
+        'use strict';
+
+        // ---------- config ----------
+        const BASE_FEE = 1000;
+        const FREE_KM = 10;
+        const PER_KM = 25;
+
+        // ---------- dom refs ----------
+        const $ = id => document.getElementById(id);
+
+        // ---------- helpers ----------
+        const num = v => { const n = parseFloat(v); return isFinite(n) ? n : 0; };
+        const fmt = n => {
+            const v = Number(n);
+            if (!isFinite(v) || v <= 0) return '₹0';
+            return '₹' + Math.round(v).toLocaleString('en-IN');
+        };
+        const fmtDate = d => d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        // ---------- number to words (Indian) ----------
+        function numberToWords(amount) {
+            if (amount === 0) return 'Zero Rupees Only';
+            const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+                'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+            const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+            function two(n) { return n < 20 ? a[n] : b[Math.floor(n / 10)] + (n % 10 ? ' ' + a[n % 10] : ''); }
+            function three(n) { return n < 100 ? two(n) : a[Math.floor(n / 100)] + ' Hundred' + (n % 100 ? ' ' + two(n % 100) : ''); }
+
+            let num = Math.round(amount);
+            let w = '';
+            const cr = Math.floor(num / 10000000); num %= 10000000;
+            const la = Math.floor(num / 100000); num %= 100000;
+            const th = Math.floor(num / 1000); num %= 1000;
+            const hu = num;
+
+            if (cr > 0) w += three(cr) + ' Crore ';
+            if (la > 0) w += two(la) + ' Lakh ';
+            if (th > 0) w += two(th) + ' Thousand ';
+            if (hu > 0) w += three(hu);
+            w = w.trim();
+            return w ? w + ' Rupees Only' : 'Zero Rupees Only';
+        }
+
+        // ---------- reference ----------
+        function makeRef() {
+            const d = new Date();
+            const s = d.getFullYear().toString().slice(-2) +
+                String(d.getMonth() + 1).padStart(2, '0') +
+                String(d.getDate()).padStart(2, '0') +
+                String(d.getHours()).padStart(2, '0') +
+                String(d.getMinutes()).padStart(2, '0');
+            return 'SV/' + s;
+        }
+
+        // ---------- calculation ----------
+        function calc() {
+            const dist = num($('distanceKm').value);
+            let travel = 0;
+            if (dist > FREE_KM) {
+                travel = dist * PER_KM;
+            }
+            const total = BASE_FEE + travel;
+            return { dist, travel, total };
+        }
+
+        // ---------- update mini preview ----------
+        function updatePreview() {
+            const { dist, travel, total } = calc();
+            const tbody = $('miniBillBody');
+            let rows = '';
+            let sr = 1;
+
+            rows += `<tr>
+                <td>${sr++}</td>
+                <td><strong>Site Visit Fee</strong></td>
+                <td class="right">1,000</td>
+                <td class="right">1</td>
+                <td class="right">${fmt(BASE_FEE)}</td>
+            </tr>`;
+
+            if (dist > FREE_KM) {
+                rows += `<tr>
+                    <td>${sr++}</td>
+                    <td><strong>Travel Charge</strong></td>
+                    <td class="right">${PER_KM}</td>
+                    <td class="right">${dist.toFixed(1)} km</td>
+                    <td class="right">${fmt(travel)}</td>
+                </tr>`;
+            }
+
+            tbody.innerHTML = rows;
+            $('miniGrandTotal').textContent = fmt(total);
+
+            $('distanceDisplay').textContent = dist.toFixed(1) + ' km';
+            $('travelDisplay').textContent = fmt(travel);
+            $('totalDisplay').textContent = fmt(total);
+        }
+
+        // ---------- build PDF content ----------
+        function buildPdf() {
+            const { dist, travel, total } = calc();
+            const now = new Date();
+            const visitDateVal = $('visitDate').value;
+            const visitDateFormatted = visitDateVal ? fmtDate(new Date(visitDateVal + 'T00:00:00')) : '—';
+
+            // header
+            $('pdfRef').textContent = makeRef();
+            $('pdfDate').textContent = fmtDate(now);
+            $('pdfVisitDate').textContent = visitDateFormatted;
+
+            // parties
+            $('pdfClientName').textContent = $('clientName').value.trim() || '—';
+            $('pdfClientPhone').innerHTML = $('clientPhone').value.trim() ? '<strong>Phone</strong> ' + $('clientPhone').value.trim() : '—';
+            $('pdfClientAddress').innerHTML = $('clientAddress').value.trim() ? '<strong>Address</strong> ' + $('clientAddress').value.trim() : '—';
+            $('pdfSiteLocation').textContent = $('siteLocation').value.trim() || '—';
+            $('pdfDistance').textContent = dist > 0 ? dist + ' km' : '—';
+
+            // table
+            const tbody = $('pdfBillBody');
+            let rows = '';
+            let sr = 1;
+
+            rows += `<tr>
+                <td>${sr++}</td>
+                <td>Site Visit Fee</td>
+                <td class="right">1,000</td>
+                <td class="right">1</td>
+                <td class="right">${fmt(BASE_FEE)}</td>
+            </tr>`;
+
+            if (dist > FREE_KM) {
+                rows += `<tr>
+                    <td>${sr++}</td>
+                    <td>Travel Charge</td>
+                    <td class="right">${PER_KM}</td>
+                    <td class="right">${dist.toFixed(1)} km</td>
+                    <td class="right">${fmt(travel)}</td>
+                </tr>`;
+            }
+
+            tbody.innerHTML = rows;
+            $('pdfGrandTotal').textContent = fmt(total);
+            $('pdfWords').textContent = numberToWords(total);
+
+            // Site notes content
+            const notesVal = $('siteNotes').value.trim();
+            const notesEl = $('pdfSiteNotesContent');
+            if (notesVal) {
+                notesEl.innerHTML = notesVal.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            } else {
+                notesEl.innerHTML = '<span class="placeholder">Site measurements, observations, and notes will appear here.</span>';
+            }
+
+            $('pdfDoc').style.display = 'block';
+        }
+
+        // ---------- reset ----------
+        function resetForm() {
+            if (!confirm('Clear all form entries?')) return;
+            $('clientName').value = '';
+            $('clientPhone').value = '';
+            $('clientAddress').value = '';
+            $('siteLocation').value = '';
+            $('distanceKm').value = '';
+            $('siteNotes').value = '';
+            const d = new Date();
+            $('visitDate').value = d.toISOString().slice(0, 10);
+            updatePreview();
+        }
+
+        // ---------- demo ----------
+        function loadDemo() {
+            if (!confirm('Load sample data? This will overwrite current entries.')) return;
+            $('clientName').value = 'Rahul Sharma';
+            $('clientPhone').value = '98765 43210';
+            $('clientAddress').value = 'Flat 3B, Surya Residency, Link Road, Cuttack, Odisha - 753012';
+            $('siteLocation').value = 'Plot No. 42, Uttarachandi Road, Athgarh, Cuttack, Odisha - 754029';
+            $('distanceKm').value = '18';
+            $('siteNotes').value = 'Plot size: 40 × 30 ft (1200 sq.ft)\nFront road width: 20 ft (blacktop)\nBoundary wall: existing on 3 sides\nSoil type: Laterite, good bearing capacity\nExisting structure: None — vacant plot\nWater source: Borewell available at 180 ft depth\nPower supply: Nearby pole (LT line) available\nDrainage: Municipal drain on south side\nApproach road: Concrete, good condition\nVastu: Main road facing East — suitable\nSlope: Slight SE slope, may need filling';
+            const d = new Date();
+            $('visitDate').value = d.toISOString().slice(0, 10);
+            updatePreview();
+        }
+
+        // ---------- generate bill (print) ----------
+        function generateBill() {
+            const name = $('clientName').value.trim();
+            const phone = $('clientPhone').value.trim();
+            const dist = num($('distanceKm').value);
+            const visitDate = $('visitDate').value;
+
+            const errs = [];
+            if (name.length < 2) errs.push('Please enter client name (min 2 characters).');
+            if (!phone) errs.push('Please enter phone number.');
+            if (dist <= 0) errs.push('Please enter a valid distance (greater than 0 km).');
+            if (!visitDate) errs.push('Please select a visit date.');
+
+            if (errs.length) {
+                alert('Please fix the following:\n\n• ' + errs.join('\n• '));
+                return;
+            }
+
+            buildPdf();
+
+            setTimeout(() => {
+                window.print();
+            }, 120);
+        }
+
+        // ---------- init ----------
+        function init() {
+            const d = new Date();
+            $('visitDate').value = d.toISOString().slice(0, 10);
+
+            $('pdfDoc').style.display = 'none';
+
+            ['clientName', 'clientPhone', 'clientAddress', 'siteLocation', 'distanceKm', 'visitDate', 'siteNotes'].forEach(id => {
+                const el = $(id);
+                if (el) {
+                    el.addEventListener('input', updatePreview);
+                    el.addEventListener('change', updatePreview);
+                }
+            });
+
+            updatePreview();
+
+            window.addEventListener('beforeprint', function() {
+                buildPdf();
+            });
+
+            window.addEventListener('afterprint', function() {
+                $('pdfDoc').style.display = 'none';
+            });
+        }
+
+        window.KMCI_Bill = {
+            init,
+            updatePreview,
+            generateBill,
+            resetForm,
+            loadDemo,
+            buildPdf
+        };
+
+        document.addEventListener('DOMContentLoaded', init);
+    })();
+</script>
+
+</body>
+</html>
