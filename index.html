@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KM Construction and Interiors - Portal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #ffffff;
+    }
+    .header .logo {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .header .logo span {
+      color: #4facfe;
+    }
+    .header .subtitle {
+      font-size: 15px;
+      opacity: 0.85;
+      font-weight: 300;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .header .divider {
+      width: 60px;
+      height: 3px;
+      background: #4facfe;
+      margin: 15px auto 0;
+      border-radius: 2px;
+    }
+    .links-container {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      max-width: 750px;
+      width: 100%;
+    }
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #1e3c72;
+      text-decoration: none;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    a .icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    a:hover {
+      background: #4facfe;
+      color: #ffffff;
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(79, 172, 254, 0.4);
+    }
+    .footer {
+      margin-top: 40px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">KM <span>Construction</span> and Interiors</div>
+    <div class="subtitle">Forms Portal</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- LINKS -->
+  <div class="links-container">
+    <a href="Quotation Form.html">
+      <span class="icon">📄</span>
+      Quotation Form
+    </a>
+    <a href="Site Visit Bill.html">
+      <span class="icon">🧾</span>
+      Site Visit Bill
+    </a>
+    <a href="Revision Req.html">
+      <span class="icon">✏️</span>
+      Revision Req
+    </a>
+    <a href="Revision Req Offline.html">
+      <span class="icon">📋</span>
+      Revision Req Offline
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    &copy; 2025 KM Construction and Interiors. All rights reserved.
+  </div>
+
+</body>
+</html>
