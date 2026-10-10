@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>KM Construction – Planning & Quotation</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--ink:#1a1a1e;--muted:#6b6b6b;--faint:#9a9ea6;--line:#e2e2e2;--line-soft:#f0f0f0;--bg:#eceef1;--card:#fff;--accent:#17325c;--accent-soft:#eef2f7;--gold:#a6822f;--success:#1f7a4c;--danger:#b3261e;--radius:10px;--shadow:0 4px 16px rgba(0,0,0,.06)}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Inter',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5;padding:16px 12px calc(16px + env(safe-area-inset-bottom));padding-top:calc(16px + env(safe-area-inset-top));display:flex;flex-direction:column;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased}
+.app{max-width:980px;width:100%;display:flex;flex-direction:column;gap:14px}
+.top-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{height:38px;width:auto;flex-shrink:0}
+.brand h2{font-size:16px;font-weight:600;color:var(--accent);letter-spacing:-.01em;line-height:1.2}
+.brand small{font-size:11px;color:var(--muted);display:block;letter-spacing:.02em}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn{padding:9px 16px;border-radius:24px;border:1px solid var(--line);background:var(--card);font-size:13px;font-weight:500;cursor:pointer;transition:.15s;color:var(--ink);font-family:inherit;white-space:nowrap;min-height:40px}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-success{background:var(--success);border-color:var(--success);color:#fff}
+.btn-outline{background:transparent;border:1px solid var(--line)}
+.btn-demo{background:#fef6e0;border-color:var(--gold);color:var(--gold)}
+.btn-demo:hover{background:var(--gold);color:#fff}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 18px;border:1px solid #f0f0f0}
+.section-title{font-size:16px;font-weight:600;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
+.section-title .num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:700;flex-shrink:0}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.4}
+.subsection-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--line-soft)}
+.subsection-title:first-of-type{margin-top:4px}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.field-grid .full{grid-column:span 2}
+@media(max-width:640px){.field-grid{grid-template-columns:1fr;gap:12px}.field-grid .full{grid-column:span 1}}
+.field-item{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field-item label{font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.02em}
+.field-item label .req{color:var(--danger);margin-left:2px}
+.field-item input,.field-item select,.field-item textarea{padding:11px 12px;border:1px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit;background:#fcfcfc;transition:.15s;width:100%;color:var(--ink);min-height:44px;-webkit-appearance:none;appearance:none}
+.field-item select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M0 0l6 8 6-8z' fill='%236b6b6b'/></svg>");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+.field-item input:focus,.field-item select:focus,.field-item textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(23,50,92,.08)}
+.field-item input[readonly]{background:#f5f5f5;color:var(--muted);cursor:default}
+.field-item input.error,.field-item select.error{border-color:var(--danger)}
+.field-item input.success,.field-item select.success{border-color:var(--success)}
+.phone-input{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:8px;background:#fcfcfc;overflow:hidden;transition:.15s;min-height:44px}
+.phone-input:focus-within{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(23,50,92,.08)}
+.phone-input .prefix{display:flex;align-items:center;padding:0 10px 0 12px;font-size:15px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-right:1px solid var(--line);white-space:nowrap;flex-shrink:0;letter-spacing:.02em}
+.phone-input input{flex:1;border:none;background:transparent;padding:11px 12px;font-size:15px;font-family:inherit;color:var(--ink);min-height:auto;-webkit-appearance:none;appearance:none;width:100%;letter-spacing:.04em}
+.phone-input input:focus{outline:none;background:transparent;box-shadow:none}
+.phone-input input::placeholder{letter-spacing:normal;color:var(--muted)}
+.calc-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.calc-row input{flex:1;min-width:80px}
+.calc-row .unit{font-size:12px;color:var(--muted);white-space:nowrap}
+.calc-row .auto{font-size:11px;color:var(--faint);font-style:italic}
+.check-row{display:flex;gap:14px;flex-wrap:wrap;padding-top:4px}
+.check-item{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;font-weight:500;color:var(--ink);min-height:44px;padding:8px 14px;border:1.5px solid var(--line);border-radius:8px;background:#fcfcfc;transition:.15s;user-select:none;flex:1;min-width:130px;position:relative}
+.check-item:active{transform:scale(.98)}
+.check-item input[type=checkbox]{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.check-item .tick{
+  width:22px;height:22px;border-radius:50%;
+  border:2px solid var(--line);
+  background:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:.15s;
+}
+.check-item .tick::after{
+  content:'';
+  width:10px;height:6px;
+  border-left:2.5px solid #fff;
+  border-bottom:2.5px solid #fff;
+  transform:rotate(-45deg) scale(0);
+  transition:transform .15s;
+  margin-top:-2px;
+}
+.check-item.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600}
+.check-item.active .tick{background:var(--accent);border-color:var(--accent)}
+.check-item.active .tick::after{transform:rotate(-45deg) scale(1)}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px}
+.toggle-chip{padding:9px 16px;border:1px solid var(--line);border-radius:20px;background:var(--card);font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);transition:.15s;user-select:none;min-height:40px;display:inline-flex;align-items:center;font-family:inherit}
+.toggle-chip:active{transform:scale(.97)}
+.toggle-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.service-chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 10px}
+.chip{padding:9px 16px;border-radius:24px;border:1px solid var(--line);background:var(--card);font-size:14px;font-weight:500;cursor:pointer;transition:.15s;color:var(--muted);user-select:none;min-height:42px;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.chip:active{transform:scale(.97)}
+.chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip small{opacity:.65;font-size:11px}
+.chip.danger{color:var(--danger);border-color:var(--danger)}
+.chip.pkg{background:#fafbfc}
+.chip.pkg.active{background:var(--gold);border-color:var(--gold);color:#fff}
+.conditional-box{margin-top:12px;padding:14px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent);animation:slideDown .25s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.conditional-box .box-title{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.conditional-box .box-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:8px}
+.conditional-box .box-row>div{display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px}
+.conditional-box label{font-size:12px;color:var(--muted)}
+.conditional-box input,.conditional-box select{padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;width:100%;min-height:40px;-webkit-appearance:none;appearance:none}
+.conditional-box select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M0 0l6 8 6-8z' fill='%236b6b6b'/></svg>");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.conditional-box input:focus,.conditional-box select:focus{outline:none;border-color:var(--accent);background:#fff}
+.conditional-box .field-hidden{display:none!important}
+.context-banner{padding:10px 14px;margin-top:14px;margin-bottom:12px;border:1px solid var(--line-soft);border-radius:8px;background:#fafbfc;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 16px}
+.context-banner .ctx-item strong{color:var(--accent);font-weight:600}
+.table-wrap{overflow-x:auto;margin:8px 0 4px;-webkit-overflow-scrolling:touch;border-radius:8px}
+table.quote-table{width:100%;border-collapse:collapse;font-size:14px;min-width:520px}
+.quote-table th{text-align:left;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;padding:8px 8px 8px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.quote-table td{padding:10px 8px 10px 0;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+.quote-table td.right{text-align:right;white-space:nowrap}
+.quote-table .total-row td{font-weight:600;border-top:2px solid var(--accent);border-bottom:none;padding-top:14px;font-size:14px}
+.quote-table .total-row .grand{color:var(--accent);font-size:18px}
+.quote-table .empty-row td{text-align:center;color:var(--faint);padding:20px;font-style:italic;font-size:13px}
+.quote-table .note{font-size:11px;color:var(--muted);font-style:italic}
+.tnc-mini{font-size:12px;color:var(--muted);line-height:1.55;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.tnc-mini strong{color:var(--ink)}
+.room-list{display:flex;flex-direction:column;gap:12px;margin:8px 0}
+.room-row{display:flex;flex-direction:column;gap:6px;padding:12px 0;border-bottom:1px solid var(--line-soft)}
+@media(min-width:640px){.room-row{flex-direction:row;align-items:flex-start;gap:12px}.room-row .floor-label{min-width:120px;padding-top:10px}}
+.room-row .floor-label{font-size:14px;font-weight:600;color:var(--accent);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.room-row textarea{flex:1;border:1px solid var(--line);border-radius:8px;padding:11px 12px;font-size:15px;font-family:inherit;resize:vertical;min-height:48px;background:#fcfcfc;-webkit-appearance:none}
+.room-row textarea:focus{outline:none;border-color:var(--accent);background:#fff}
+.room-row .del{background:none;border:1px solid var(--line);border-radius:6px;color:var(--danger);font-size:18px;cursor:pointer;opacity:.7;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:inherit;line-height:1}
+.room-row .del:active{opacity:1;background:#fff5f5}
+.add-row{background:none;border:1.5px dashed var(--line);border-radius:8px;padding:11px 16px;font-size:14px;color:var(--accent);font-weight:500;cursor:pointer;width:100%;transition:.15s;font-family:inherit;min-height:44px}
+.add-row:active{background:var(--accent-soft);border-color:var(--accent)}
+.footer-note{font-size:11px;color:var(--muted);text-align:center;padding:10px 6px 0;border-top:1px solid var(--line-soft);margin-top:10px;word-break:break-word}
+.pdf-doc{display:none}
+.status-badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:16px;background:#f1f1f1;color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap}
+.status-badge.active{background:#e3f4e8;color:#176b3a;border:1px solid #b9dfc4}
+.advance-panel{display:none}
+.advance-panel.open{display:block}
+.advance-panel .section-title{margin-bottom:12px}
+.advance-panel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.advance-panel-error{display:none;color:var(--danger);font-size:12px;margin-top:8px}
+.pdf-project-id{display:flex;width:max-content;font-size:8pt;font-weight:700;color:#176b3a;background:#e3f4e8;border:1px solid #b9dfc4;border-radius:4px;padding:3px 8px;margin:0 0 2px auto}
+.pdf-draft-note{margin-top:8px;padding-top:6px;border-top:1px solid var(--line-soft);font-size:8pt;font-style:italic;color:var(--muted)}
+.pdf-receipt{display:none;margin-top:20px}
+.pdf-receipt .pdf-letterhead{margin-bottom:18px}
+.pdf-receipt-title{font-family:'Source Serif 4',Georgia,serif;font-size:18pt;font-weight:700;color:var(--accent);text-transform:uppercase}
+.pdf-receipt-meta{font-size:8pt;line-height:1.55}
+.pdf-receipt-table td:first-child{width:58%;font-weight:600}
+.pdf-amount-words{margin-top:12px;font-weight:600}
+.pdf-receipt-note{margin-top:12px;font-size:8pt;font-style:italic;color:var(--muted)}
+.pdf-receipt-signature{margin-top:48px;text-align:right;font-size:8pt;font-weight:600}
+@media print{
+@page{
+  size:A4 portrait;
+  margin:18mm 15mm 18mm;
+  @bottom-center{
+    content:"KM Construction & Interiors · 017, Uttarachandi Road, Athgarh · +91 70088 09883 · kmconstructions99@gmail.com";
+    font-family:'Inter',Arial,sans-serif;
+    font-size:6.5pt;
+    color:#555;
+    text-align:center;
+    white-space:nowrap;
+    border-top:.5pt solid #d5d5d5;
+    padding-top:3mm;
+    vertical-align:top;
+  }
+}
+@page:first{@bottom-center{content:none}}
+html,body{background:#fff!important;padding:0!important;margin:0!important;font-size:9pt!important;width:auto!important;min-height:auto!important;display:block!important}
+.app,.top-bar,.actions,.btn,.card,.footer-note,.validation-summary{display:none!important}
+.pdf-doc{display:block!important;width:100%!important;max-width:100%!important;font-size:9pt;line-height:1.35}
+*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+.pdf-section{break-inside:auto;page-break-inside:auto;margin-bottom:8px}
+.pdf-section-title{break-after:avoid-page;page-break-after:avoid}
+.pdf-svc-timeline{display:none!important}
+.pdf-footer{display:none!important}
+.pdf-table thead{display:table-header-group}
+.pdf-table tfoot{display:table-row-group}
+.pdf-table tr{break-inside:avoid;page-break-inside:avoid}
+.pdf-letterhead,.pdf-parties,.pdf-data-grid,.pdf-payment,.pdf-timeline,.pdf-terms,.pdf-signatures{break-inside:avoid;page-break-inside:avoid}
+.pdf-receipt{break-before:page;page-break-before:always}
+.pdf-receipt[hidden]{display:none!important}
+.pdf-draft-note[hidden]{display:none!important}
+.advance-panel,.status-badge{display:none!important}
+.pdf-receipt .pdf-letterhead{break-inside:avoid;page-break-inside:avoid}
+.pdf-receipt-signature{break-inside:avoid;page-break-inside:avoid}
+}
+.pdf-doc{--ink:#171717;--muted:#555;--faint:#777;--line:#d5d5d5;--line-soft:#e9e9e9;--accent:#222;--accent-soft:#f1f1f1;--gold:#555;font-family:'Inter',-apple-system,sans-serif;color:var(--ink);font-size:9.5pt;line-height:1.35}
+.pdf-letterhead{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:8px;border-bottom:2px solid var(--accent);margin-bottom:6px;gap:12px}
+.pdf-letterhead-left{display:flex;gap:28px;align-items:flex-start;min-width:0}
+.pdf-letterhead img{height:46px;width:auto;flex-shrink:0;transform:scale(1.25);transform-origin:left top}
+.pdf-company-name{font-family:'Source Serif 4',Georgia,serif;font-size:16pt;font-weight:700;color:var(--accent);line-height:1.1}
+.pdf-company-tag{font-size:6.5pt;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:500;margin-top:3px}
+.pdf-company-details{font-size:7pt;color:var(--muted);line-height:1.4;margin-top:5px}
+.pdf-company-details strong{color:var(--ink);font-weight:600}
+.pdf-letterhead-right{text-align:right;font-size:7.5pt;color:var(--muted);line-height:1.45;flex-shrink:0}
+.pdf-letterhead-right .doc-type{font-family:'Source Serif 4',Georgia,serif;font-size:13pt;font-weight:700;color:var(--accent);text-transform:uppercase;margin-bottom:3px}
+.pdf-letterhead-right .ref{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:600;padding:2px 7px;border-radius:2px;font-size:7pt;margin-bottom:3px}
+.pdf-letterhead-right .ref.active{background:transparent;color:var(--muted);padding:2px 0}
+.pdf-parties{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:13px;padding-bottom:0;border-bottom:0}
+.pdf-parties-block h4{font-size:8.5pt;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.pdf-parties-block .name{font-size:9.5pt;font-weight:600;color:var(--ink);margin-bottom:1px}
+.pdf-parties-block .line{font-size:7.5pt;color:var(--muted);line-height:1.4}
+.pdf-parties-block .line strong{color:var(--ink);font-weight:600}
+.pdf-section{margin-bottom:11px}
+.pdf-specifications{padding:8px 10px 10px;background:#f5f5f5;border-left:3px solid var(--accent);break-inside:avoid;page-break-inside:avoid}
+.pdf-specifications .pdf-section-title{font-size:9.5pt;margin-bottom:8px}
+.pdf-section-title{font-size:8.5pt;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;padding-bottom:0;border-bottom:0;margin-bottom:7px;display:flex;justify-content:space-between;align-items:baseline}
+.pdf-section-title .badge{font-size:7pt;font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0}
+
+/* ===== PRINTER-FRIENDLY TABLE HEADERS ===== */
+.pdf-table{width:100%;border-collapse:collapse;font-size:8pt;line-height:1.3;border:1px solid var(--line)}
+.pdf-table th{
+  background:#f5f5f5;
+  color:var(--accent);
+  text-align:left;
+  font-size:7pt;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  padding:6px 7px;
+  border:1px solid var(--line);
+}
+.pdf-table th.right,.pdf-table td.right{text-align:right}
+.pdf-table td{padding:6px 7px;border:1px solid var(--line-soft);vertical-align:top;color:var(--ink)}
+.pdf-table.minimal{border:1px solid var(--line)}
+.pdf-table.minimal th{border:0;border-bottom:1px solid var(--line)}
+.pdf-table.minimal td{border:0;border-bottom:1px solid var(--line-soft);background:#fff!important}
+.pdf-table.minimal tbody tr:nth-child(even) td{background:#fff!important}
+.pdf-table.minimal .total-row td{border:0;border-top:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent)}
+.pdf-table .total-row td{font-weight:700;font-size:9.5pt;color:var(--accent);border-top:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent);padding:7px}
+.pdf-table .total-row .grand{font-size:10.5pt}
+.pdf-table .subtotal-row td{font-weight:600;font-size:8.5pt}
+.pdf-table .empty-note td{text-align:center;color:var(--muted);font-style:italic;padding:14px}
+.pdf-table .selected-row td{font-weight:600}
+
+.pdf-data-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px 14px;font-size:8.5pt;padding:4px 0 0;background:transparent;border:0;border-radius:0}
+.pdf-data-grid .dk{font-size:7.2pt;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+.pdf-data-grid .dv{font-size:9pt;color:var(--ink);font-weight:600}
+.pdf-payment{display:flex;border:1px solid var(--line);border-radius:4px;background:#f7f7f7;overflow:hidden}
+.pdf-payment-cell{flex:1;display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 14px;text-align:left;min-width:0}
+.pdf-payment-cell+.pdf-payment-cell{border-left:1px solid var(--line-soft)}
+.pdf-payment-cell .left{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pdf-payment-cell .stage{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#111}
+.pdf-payment-cell .note{font-size:9px;color:#666;line-height:1.3}
+.pdf-payment-cell .right{text-align:right;flex-shrink:0}
+.pdf-payment-cell .amt{font-size:14px;font-weight:700;white-space:nowrap;color:#111}
+.pdf-payment-cell .pct{font-size:9px;color:#666;display:block;font-weight:500;margin-top:1px}
+.pdf-timeline{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:4px;background:#fff;overflow:hidden;margin-bottom:8px}
+.pdf-timeline-cell{padding:7px 12px;display:flex;flex-direction:column;gap:2px;text-align:left;background:transparent;min-width:0}
+.pdf-timeline-cell+.pdf-timeline-cell{border-left:1px solid var(--line-soft)}
+.pdf-timeline-cell.highlight{background:#f3f3f3}
+.pdf-timeline-cell .timeline-row1{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.pdf-timeline-cell .tlabel{font-size:6pt;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em}
+.pdf-timeline-cell .tdays{font-size:6pt;font-weight:700;color:#555;letter-spacing:.04em}
+.pdf-timeline-cell .tvalue{font-size:10pt;font-weight:700;color:#222;line-height:1.1}
+.pdf-timeline-cell .tsub{font-size:6pt;color:#999}
+
+.pdf-svc-timeline{margin-top:4px}
+.pdf-svc-timeline-title{font-size:7pt;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.pdf-svc-timeline-grid{display:flex;flex-wrap:wrap;gap:3px 10px;line-height:1.25}
+.pdf-svc-pill{display:inline-flex;align-items:baseline;gap:3px;padding:1px 0;background:transparent;border:0;border-radius:0;font-size:7pt;color:var(--ink);white-space:nowrap}
+.pdf-svc-pill .name{font-weight:600;color:var(--ink)}
+.pdf-svc-pill .time{color:var(--accent);font-weight:700;font-size:7pt;margin-left:1px}
+.pdf-svc-pill .time .sep{color:var(--faint);font-weight:400;font-size:6.5pt;margin:0 1px}
+.pdf-svc-timeline-note{font-size:7pt;color:var(--muted);font-style:italic;margin-top:4px;line-height:1.3}
+
+.pdf-terms{font-size:7.4pt;line-height:1.4;color:var(--muted);padding:0;background:transparent;border:0;border-radius:0;margin-bottom:10px}
+.pdf-terms ol{list-style-type:decimal;padding-left:20px}
+.pdf-terms ol>li{padding-left:3px;margin-bottom:5px;break-inside:avoid;page-break-inside:avoid}
+.pdf-terms ul{list-style-type:disc;padding-left:18px;margin:3px 0 2px}
+.pdf-terms ul>li{padding-left:2px;margin-bottom:2px}
+.pdf-terms strong{color:var(--ink);font-weight:600}
+.pdf-signatures{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:16px;padding-top:8px;break-inside:avoid;page-break-inside:avoid}
+.pdf-sig-block{text-align:center}
+.pdf-sig-line{border-top:.5pt solid var(--line);margin:72px 20px 6px}
+.pdf-sig-label{font-size:7.5pt;color:var(--muted);font-weight:500}
+.pdf-sig-label strong{color:var(--ink);display:block;font-size:8pt;margin-bottom:2px}
+.pdf-footer{margin-top:10px;padding-top:5px;border-top:0;font-size:6.5pt;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+@media print{
+.pdf-letterhead{margin-bottom:6px;padding-bottom:8px;gap:12px}
+.pdf-letterhead-left{gap:24px}
+.pdf-letterhead img{height:42px;transform:scale(1.15)}
+.pdf-company-name{font-size:15pt}
+.pdf-company-tag{font-size:6.2pt;margin-top:3px}
+.pdf-company-details{font-size:6.8pt;line-height:1.35;margin-top:4px}
+.pdf-letterhead-right{font-size:7.3pt;line-height:1.4}
+.pdf-letterhead-right .doc-type{font-size:12pt}
+.pdf-parties{gap:18px;margin-bottom:12px}
+.pdf-parties-block h4{font-size:8pt;margin-bottom:4px}
+.pdf-parties-block .name{font-size:9pt}
+.pdf-parties-block .line{font-size:7.3pt;line-height:1.35}
+.pdf-section{margin-bottom:10px}
+.pdf-specifications{padding:7px 9px 8px}
+.pdf-specifications .pdf-section-title{font-size:9pt;margin-bottom:7px}
+.pdf-data-grid{gap:7px 12px;font-size:8pt}
+.pdf-data-grid .dk{font-size:6.8pt}
+.pdf-data-grid .dv{font-size:8.5pt}
+.pdf-section-title{font-size:8.2pt;margin-bottom:6px}
+.pdf-table{font-size:8pt;line-height:1.25}
+.pdf-table th{font-size:6.8pt;padding:5px 6px}
+.pdf-table td{padding:5px 6px}
+.pdf-table .total-row td{font-size:9pt;padding:6px}
+.pdf-table .total-row .grand{font-size:10pt}
+.pdf-payment-cell{padding:9px 11px;gap:9px}
+.pdf-payment-cell .stage{font-size:9px}
+.pdf-payment-cell .note{font-size:8px}
+.pdf-timeline-cell{padding:6px 10px}
+.pdf-timeline-cell .tvalue{font-size:9pt}
+.pdf-terms{font-size:7.2pt;line-height:1.38;margin-bottom:8px}
+.pdf-terms ol{list-style-type:decimal;padding-left:20px}
+.pdf-terms ol>li{padding-left:3px;margin-bottom:5px}
+.pdf-terms ul{list-style-type:disc;padding-left:18px;margin:3px 0 2px}
+.pdf-terms ul>li{padding-left:2px;margin-bottom:2px}
+.pdf-signatures{margin-top:12px;padding-top:6px;gap:24px}
+.pdf-sig-line{margin:36px 14px 5px}
+.pdf-sig-label{font-size:7pt}
+.pdf-sig-label strong{font-size:7.5pt}
+.pdf-draft-note{font-size:7.5pt;margin-top:6px;padding-top:4px}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+<div class="top-bar">
+<div class="brand">
+<img src="https://raw.githubusercontent.com/Anhsirk151/kmconstruction-assets/52877915152457b9c850a50ac46049d545980b9f/KM%20Construction%20and%20interiors%20Logo%20new%2020253.png" alt="KM Construction">
+<div><h2>KM Construction</h2><small>Planning &amp; Quotation</small></div>
+</div>
+<div class="actions">
+<button class="btn btn-demo" onclick="KMCI.loadDemo()">★ Demo</button>
+<button class="btn btn-outline" onclick="KMCI.clearForm()">Clear</button>
+<button class="btn btn-outline" onclick="KMCI.exportData()">Export</button>
+<button class="btn btn-outline" onclick="KMCI.pickImport()">Import</button>
+<button class="btn btn-outline" id="advanceButton" onclick="KMCI.toggleAdvancePanel()">Record Advance</button>
+<button class="btn btn-primary" onclick="KMCI.printPdf()">Print / PDF</button>
+<button class="btn btn-success" onclick="KMCI.validateAndSubmit()">Submit</button>
+</div>
+<span class="status-badge" id="lifecycleBadge">Status: Draft</span>
+</div>
+
+<input type="file" id="importFile" accept=".json" hidden>
+<div class="card advance-panel" id="advancePanel">
+<div class="section-title">Record Advance Payment</div>
+<div class="field-grid">
+<div class="field-item"><label for="advanceAmount">Advance Amount (₹)</label><input type="number" id="advanceAmount" min="0" step="any" inputmode="decimal"></div>
+<div class="field-item"><label for="paymentMode">Payment Mode</label><select id="paymentMode"><option value="">Select payment mode</option><option>UPI</option><option>Bank Transfer</option><option>Cash</option><option>Cheque</option></select></div>
+<div class="field-item"><label for="paymentRef">Payment Reference</label><input type="text" id="paymentRef" placeholder="UTR / transaction ID / cheque no."></div>
+<div class="field-item"><label for="paymentDate">Payment Date</label><input type="date" id="paymentDate"></div>
+</div>
+<div class="advance-panel-error" id="advancePanelError" role="alert"></div>
+<div class="advance-panel-actions">
+<button type="button" class="btn btn-success" onclick="KMCI.confirmAdvance()">Confirm Advance</button>
+<button type="button" class="btn btn-outline" onclick="KMCI.closeAdvancePanel()">Cancel</button>
+<button type="button" class="btn btn-outline" id="cancelAdvanceButton" style="display:none;color:var(--danger);" onclick="KMCI.cancelAdvance()">Cancel Advance</button>
+</div>
+</div>
+
+<div class="validation-summary" id="validationSummary" role="alert" aria-live="polite" style="display:none;background:#fff;padding:12px 16px;border-left:4px solid var(--danger);border-radius:8px;box-shadow:var(--shadow);">
+<div style="font-weight:600;color:var(--danger);font-size:14px;">Please fix the following:</div>
+<ul id="validationList" style="list-style:none;padding:6px 0 0;font-size:13px;color:var(--muted);line-height:1.6;"></ul>
+</div>
+
+<div class="card">
+<div class="section-title"><span class="num">1</span> Client &amp; Site Details</div>
+<div class="field-grid">
+<div class="field-item"><label for="client_name">Full name <span class="req">*</span></label><input type="text" id="client_name" placeholder="e.g. Rahul Sharma" autocomplete="name"></div>
+<div class="field-item">
+<label for="phone_primary">Phone (primary) <span class="req">*</span></label>
+<div class="phone-input">
+<span class="prefix">+91</span>
+<input type="tel" id="phone_primary" placeholder="98765 43210" autocomplete="tel" inputmode="numeric" maxlength="11">
+</div>
+</div>
+<div class="field-item">
+<label for="phone_alternate">Alternate phone</label>
+<div class="phone-input">
+<span class="prefix">+91</span>
+<input type="tel" id="phone_alternate" placeholder="Optional" autocomplete="tel" inputmode="numeric" maxlength="11">
+</div>
+</div>
+<div class="field-item"><label for="client_email">Email</label><input type="email" id="client_email" placeholder="rahul@example.com" autocomplete="email"></div>
+<div class="field-item full"><label for="client_address1">Client's present address</label><input type="text" id="client_address1" placeholder="House / Street, Area, City, State, PIN" autocomplete="street-address"></div>
+<div class="field-item full"><label for="site_location">Site location (Google Maps link or landmark)</label><input type="text" id="site_location" placeholder="e.g. https://maps.app.goo.gl/… or Near Athgarh Bus Stand"></div>
+</div>
+</div>
+
+<div class="card">
+<div class="section-title"><span class="num">2</span> Project Basics</div>
+<div class="field-grid">
+<div class="field-item"><label for="building_type">Building type <span class="req">*</span></label><select id="building_type"><option value="">Select</option><option value="Residential">Residential</option><option value="Commercial">Commercial</option><option value="Mixed Use">Mixed Use</option><option value="Other">Other</option></select></div>
+<div class="field-item" id="buildingTypeOtherWrap" style="display:none"><label for="building_type_other">Specify building type <span class="req">*</span></label><input type="text" id="building_type_other" placeholder="Enter building type"></div>
+<div class="field-item"><label for="project_type">Project type <span class="req">*</span></label><select id="project_type"><option value="">Select</option><option value="New">New Construction</option><option value="Renovation">Renovation</option><option value="Extension">Extension</option><option value="Existing Building">Existing Building</option><option value="Other">Other</option></select></div>
+<div class="field-item" id="projectTypeOtherWrap" style="display:none"><label for="project_type_other">Specify project type <span class="req">*</span></label><input type="text" id="project_type_other" placeholder="Enter project type"></div>
+<div class="field-item"><label for="plot_length_ft">Plot length <span class="req">*</span></label><div class="calc-row"><input type="number" id="plot_length_ft" placeholder="30" min="0" step="any" inputmode="decimal"><span class="unit">ft</span></div></div>
+<div class="field-item"><label for="plot_width_ft">Plot width <span class="req">*</span></label><div class="calc-row"><input type="number" id="plot_width_ft" placeholder="40" min="0" step="any" inputmode="decimal"><span class="unit">ft</span></div></div>
+<div class="field-item"><label for="plot_area_sqft">Plot area (auto)</label><div class="calc-row"><input type="number" id="plot_area_sqft" placeholder="—" readonly><span class="unit">sq.ft</span><span class="auto">Auto</span></div></div>
+<div class="field-item"><label for="plot_facing">Facing direction <span class="req">*</span></label><select id="plot_facing"><option value="">Select</option><option>North</option><option>North-East</option><option>East</option><option>South-East</option><option>South</option><option>South-West</option><option>West</option><option>North-West</option></select></div>
+<div class="field-item"><label for="builtup_area_sqft">Built-up area per floor <span class="req">*</span></label><div class="calc-row"><input type="number" id="builtup_area_sqft" placeholder="1000" min="0" step="any" inputmode="decimal"><span class="unit">sq.ft</span></div></div>
+<div class="field-item"><label for="floorplan_floors">Number of floors <span class="req">*</span></label><select id="floorplan_floors"><option value="G+0">G+0 (Single Storey)</option><option value="G+1" selected>G+1 (Double Storey)</option><option value="G+2">G+2 (Triple Storey)</option><option value="G+3">G+3 (Four Storey)</option><option value="G+4">G+4 (Five Storey)</option></select></div>
+<div class="field-item"><label for="total_builtup_area_sqft">Total built-up area (auto)</label><div class="calc-row"><input type="number" id="total_builtup_area_sqft" placeholder="—" readonly><span class="unit">sq.ft</span><span class="auto">Auto</span></div></div>
+<div class="field-item"><label for="road_width_ft">Road width</label><div class="calc-row"><input type="number" id="road_width_ft" placeholder="20" min="0" step="any" inputmode="decimal"><span class="unit">ft</span></div></div>
+<div class="field-item full"><label>Special requirements</label>
+<div class="check-row">
+<label class="check-item" for="basement_check"><input type="checkbox" id="basement_check"><span class="tick" aria-hidden="true"></span> Basement</label>
+<label class="check-item" for="stilt_check"><input type="checkbox" id="stilt_check"><span class="tick" aria-hidden="true"></span> Stilt parking</label>
+<label class="check-item" for="lift_provision"><input type="checkbox" id="lift_provision"><span class="tick" aria-hidden="true"></span> Lift provision</label>
+</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="section-title"><span class="num">3</span> Services Required</div>
+<p class="section-sub">Choose a package or pick individual services.</p>
+
+<div class="subsection-title">Packages</div>
+<div class="service-chips" id="packageChips">
+<button type="button" class="chip pkg" data-package="basic">Basic <small>2 services</small></button>
+<button type="button" class="chip pkg" data-package="standard">Standard <small>3 services</small></button>
+<button type="button" class="chip pkg" data-package="complete">Complete <small>5 services</small></button>
+<button type="button" class="chip pkg" data-package="premium">Premium <small>7 services</small></button>
+<button type="button" class="chip danger" id="clearPackages">Clear</button>
+</div>
+
+<div class="subsection-title">Individual Services</div>
+<div class="service-chips" id="serviceChips">
+<button type="button" class="chip" data-service="s_floorplan">Floor plan (Vastu)</button>
+<button type="button" class="chip" data-service="s_structural_basic">Structural design</button>
+<button type="button" class="chip" data-service="s_mapping">Site mapping</button>
+<button type="button" class="chip" data-service="s_elec">Electrical</button>
+<button type="button" class="chip" data-service="s_plumbing">Plumbing</button>
+<button type="button" class="chip" data-service="s_3d_ext">3D Exterior</button>
+<button type="button" class="chip" data-service="s_3d_int">Interior design</button>
+<button type="button" class="chip" data-service="s_obpas">Plan approval</button>
+<button type="button" class="chip" data-service="s_bank">Bank loan estimate</button>
+<button type="button" class="chip" data-service="s_adv_struct">Advance structural</button>
+<button type="button" class="chip" data-service="s_boq">BOQ</button>
+<button type="button" class="chip" data-service="s_soil">Soil test</button>
+<button type="button" class="chip" data-service="s_turnkey">Turnkey construction</button>
+</div>
+
+<div class="conditional-box" id="mappingBox" style="display:none;">
+<div class="box-title">Site &amp; Structure Mapping</div>
+<div class="toggle-row" id="mappingToggle"><button type="button" class="toggle-chip active" data-mapping="structure">Existing Structure</button><button type="button" class="toggle-chip" data-mapping="plot">Plot / Land</button></div>
+<div id="mappingStructureFields" class="box-row">
+<div><label for="mapping_floors">Structure floors</label><select id="mapping_floors"><option value="G+0">G+0</option><option value="G+1" selected>G+1</option><option value="G+2">G+2</option><option value="G+3">G+3</option></select></div>
+<div><label for="structure_type">Structure type</label><select id="structure_type"><option value="RCC">RCC Frame</option><option value="Load Bearing">Load Bearing</option><option value="Brick">Brick Masonry</option><option value="Laterite">Laterite</option><option value="Steel">Steel Frame</option><option value="Composite">Composite</option><option value="Other">Other</option></select></div>
+</div>
+<div id="mappingPlotFields" class="box-row" style="display:none;">
+<div><label for="plot_area_doc">Plot area (as per doc)</label><input type="number" id="plot_area_doc" placeholder="sq.ft" min="0" step="any" inputmode="decimal"><span style="font-size:11px;color:var(--faint);font-style:italic;">(1742 sqft base rate slab)</span></div>
+</div>
+</div>
+
+<div class="conditional-box" id="extBox" style="display:none;">
+<div class="box-title">3D Exterior Design</div>
+<div class="box-row">
+<div><label for="elevation_level">Elevation level</label><select id="elevation_level"></select></div>
+<div><label for="facade_style">Facade style</label><select id="facade_style"><option value="Modern">Modern</option><option value="Classic">Classic</option><option value="Contemporary">Contemporary</option><option value="Traditional">Traditional</option><option value="Minimalist">Minimalist</option></select></div>
+</div>
+</div>
+
+<div class="conditional-box" id="interiorBox" style="display:none;">
+<div class="box-title">Interior Design</div>
+<div class="toggle-row" id="interiorToggle"><button type="button" class="toggle-chip active" data-interior="rooms">Rooms</button><button type="button" class="toggle-chip" data-interior="area">Area (sq.ft)</button></div>
+<div class="box-row">
+<div id="interiorRoomsDiv"><label for="interior_rooms">Number of rooms</label><input type="number" id="interior_rooms" placeholder="e.g. 8" min="0" step="any" inputmode="decimal"></div>
+<div id="interiorAreaDiv" class="field-hidden"><label for="interior_area">Area (sq.ft)</label><input type="number" id="interior_area" placeholder="sq.ft" min="0" step="any" inputmode="decimal"></div>
+<div><label for="interior_style">Design style</label><select id="interior_style"><option value="Modern">Modern</option><option value="Minimalist">Minimalist</option><option value="Traditional">Traditional</option><option value="Luxury">Luxury</option><option value="Industrial">Industrial</option><option value="Scandinavian">Scandinavian</option></select></div>
+</div>
+</div>
+
+<div class="conditional-box" id="approvalBox" style="display:none;">
+<div class="box-title">Building Plan Approval</div>
+<div class="toggle-row" id="approvalToggle"><button type="button" class="toggle-chip active" data-approval="auto">Auto (from floorplan)</button><button type="button" class="toggle-chip" data-approval="manual">Manual</button></div>
+<div class="box-row">
+<div><label for="approval_area">Total built-up area</label><input type="number" id="approval_area" placeholder="sq.ft" min="0" step="any" inputmode="decimal"></div>
+<div><label for="approval_authority">Approval authority</label><select id="approval_authority"><option value="">Select</option><option value="Gram Panchayat">Gram Panchayat — ₹5/sq.ft</option><option value="Notified Area Council">Notified Area Council (NAC) — ₹12/sq.ft</option><option value="Municipality Corporation">Municipality Corporation — ₹12/sq.ft</option></select></div>
+</div>
+</div>
+
+<div class="conditional-box" id="bankBox" style="display:none;">
+<div class="box-title">Bank Loan Estimate</div>
+<div class="box-row">
+<div><label for="loan_amount">Loan amount (in Lakhs)</label><input type="text" id="loan_amount" placeholder="e.g. 25" inputmode="decimal"><span style="font-size:12px;color:var(--muted);display:block;margin-top:4px;" id="loanDisplay">—</span></div>
+<div><label for="loan_floors">Number of floors</label><select id="loan_floors"></select><span style="font-size:11px;color:var(--faint);display:block;margin-top:4px;">Independent of project floors</span></div>
+</div>
+</div>
+
+<div class="conditional-box" id="structuralBox" style="display:none;">
+<div class="box-title">Basic Structural Design</div>
+<div class="box-row">
+<div><label for="structure_load_capacity">Foundation capacity</label><select id="structure_load_capacity"></select><span style="font-size:11px;color:var(--danger);margin-top:4px;display:none;" id="foundationWarning">⚠️ Must be ≥ Floorplan floors</span></div>
+</div>
+</div>
+
+<div class="conditional-box" id="turnkeyBox" style="display:none;">
+<div class="box-title">Turnkey Construction Package</div>
+<div class="toggle-row" id="turnkeyToggle"><button type="button" class="toggle-chip active" data-tier="Basic">Basic · ₹1,700/sq.ft</button><button type="button" class="toggle-chip" data-tier="Standard">Standard · ₹1,900/sq.ft</button><button type="button" class="toggle-chip" data-tier="Premium">Premium · ₹2,500/sq.ft</button></div>
+</div>
+
+<div class="context-banner">
+<span class="ctx-item">Area: <strong id="ctx-area">— sq.ft</strong></span>
+<span class="ctx-item">Floors: <strong id="ctx-floors">—</strong></span>
+<span class="ctx-item">Plot: <strong id="ctx-plot">— sq.ft</strong></span>
+<span class="ctx-item">Type: <strong id="ctx-type">—</strong></span>
+</div>
+
+<div class="table-wrap">
+<table class="quote-table">
+<thead><tr><th style="width:5%;">#</th><th style="width:40%;">Service</th><th style="width:12%;">Unit</th><th style="width:13%;">Rate (₹)</th><th style="width:10%;">Qty</th><th style="width:20%;text-align:right;">Amount (₹)</th></tr></thead>
+<tbody id="quoteBody"><tr class="empty-row"><td colspan="6">Select services above to see estimate</td></tr></tbody>
+<tfoot><tr class="total-row"><td colspan="5" style="text-align:right;">Total</td><td class="right"><span class="grand" id="grandTotal">₹0</span></td></tr></tfoot>
+</table>
+</div>
+</div>
+
+<div class="card">
+<div class="section-title"><span class="num">4</span> Floor-wise Room Requirements (optional)</div>
+<p class="section-sub">Describe what you need on each floor — helps us refine the plan.</p>
+<div class="room-list" id="roomList"></div>
+<button type="button" class="add-row" onclick="KMCI.addRoomRow()">+ Add another floor</button>
+<div style="margin-top:14px;">
+<label for="generalNotes" style="font-size:12px;font-weight:500;color:var(--muted);">General notes</label>
+<textarea id="generalNotes" rows="2" style="width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:15px;margin-top:6px;background:#fcfcfc;min-height:60px;" placeholder="Special requests, vastu preferences, material preferences…"></textarea>
+</div>
+</div>
+
+<div class="footer-note">KM Construction and Interiors · 017, Uttarachandi Road, Athgarh · +91 7008809883 · kmconstructions99@gmail.com</div>
+</div>
+
+<div class="pdf-doc" id="pdfDoc">
+<div class="pdf-letterhead">
+<div class="pdf-letterhead-left">
+<img src="https://raw.githubusercontent.com/Anhsirk151/kmconstruction-assets/52877915152457b9c850a50ac46049d545980b9f/KM%20Construction%20and%20interiors%20Logo%20new%2020253.png" alt="KM Construction">
+<div>
+<div class="pdf-company-name">KM Construction &amp; Interiors</div>
+<div class="pdf-company-tag">Architecture · Structure · Interiors · Approvals · Construction</div>
+<div class="pdf-company-details"><strong>Registered Office:</strong> 017, Uttarachandi Road, Athgarh<br><strong>Phone:</strong> +91 70088 09883 &nbsp;·&nbsp; <strong>Email:</strong> kmconstructions99@gmail.com</div>
+</div>
+</div>
+<div class="pdf-letterhead-right">
+<div class="doc-type">Quotation</div>
+<div class="ref" id="pdfRefNo">REF: QT/YYMMDDHHMM</div>
+<div><strong>Date:</strong> <span id="pdfDate">—</span></div>
+<div><strong>Valid until:</strong> <span id="pdfValid">—</span></div>
+</div>
+</div>
+<div class="pdf-project-id" id="pdfProjectId" style="display:none;"></div>
+
+<div class="pdf-parties">
+<div class="pdf-parties-block">
+<h4>Quotation For</h4>
+<div class="name" id="pdfClientName">—</div>
+<div class="line" id="pdfClientContact">—</div>
+<div class="line" id="pdfClientEmail">—</div>
+<div class="line" id="pdfClientAddress">—</div>
+</div>
+<div class="pdf-parties-block"><h4>Project Details</h4><div class="line"><strong>Building Type:</strong> <span id="pdfBuildingType">—</span></div><div class="line"><strong>Project Type:</strong> <span id="pdfProjectType">—</span></div><div class="line"><strong>Site Location:</strong> <span id="pdfSiteAddress">—</span></div></div>
+</div>
+
+<div class="pdf-section pdf-specifications">
+<div class="pdf-section-title"><span>Project Specifications</span></div>
+<div class="pdf-data-grid">
+<div><div class="dk">Plot Dimensions</div><div class="dv" id="pdfPlotDim">—</div></div>
+<div><div class="dk">Plot Area</div><div class="dv" id="pdfPlotArea">—</div></div>
+<div><div class="dk">Facing</div><div class="dv" id="pdfFacing">—</div></div>
+<div><div class="dk">Built-up / Floor</div><div class="dv" id="pdfBuiltup">—</div></div>
+<div><div class="dk">Floors</div><div class="dv" id="pdfFloors">—</div></div>
+<div><div class="dk">Total Built-up</div><div class="dv" id="pdfTotalBuiltup">—</div></div>
+<div><div class="dk">Road Width</div><div class="dv" id="pdfRoadWidth">—</div></div>
+<div><div class="dk">Special Features</div><div class="dv" id="pdfSpecial">—</div></div>
+<div><div class="dk">Est. Timeline</div><div class="dv" id="pdfTimelineInline">—</div></div>
+</div>
+</div>
+
+<div class="pdf-section">
+<div class="pdf-section-title"><span>Scope of Services &amp; Quotation</span><span class="badge" id="pdfSvcCount">0 services</span></div>
+<table class="pdf-table minimal">
+<thead><tr><th style="width:5%;">#</th><th style="width:40%;">Service Description</th><th style="width:12%;">Unit</th><th style="width:13%;" class="right">Rate (₹)</th><th style="width:10%;" class="right">Qty</th><th style="width:20%;" class="right">Amount (₹)</th></tr></thead>
+<tbody id="pdfQuoteBody"><tr class="empty-note"><td colspan="6">No services selected</td></tr></tbody>
+<tfoot>
+<tr class="subtotal-row" id="pdfSubtotalRow" style="display:none;"><td colspan="5" class="right">Service Cost Subtotal</td><td class="right" id="pdfSubtotal">₹0</td></tr>
+<tr class="total-row"><td colspan="5" class="right">Total Estimated Cost</td><td class="right"><span class="grand" id="pdfTotal">₹0</span></td></tr>
+</tfoot>
+</table>
+</div>
+
+<div class="pdf-section" id="pdfConstructionSection" style="display:none;">
+<div class="pdf-section-title"><span>Construction Cost Breakdown</span><span class="badge" id="pdfConstructionBadge">—</span></div>
+<table class="pdf-table">
+<thead><tr><th style="width:28%;">Package</th><th style="width:18%;" class="right">Substructure</th><th style="width:18%;" class="right">Superstructure</th><th style="width:18%;" class="right">Total Cost</th><th style="width:18%;" class="right">Duration</th></tr></thead>
+<tbody id="pdfConstructionBody"></tbody>
+</table>
+<div style="font-size:7pt;color:var(--muted);margin-top:4px;">Substructure @ ₹450/sq.ft of ground-floor area. Superstructure rate depends on selected package.</div>
+</div>
+
+<div class="pdf-section">
+<div class="pdf-section-title"><span>Payment Schedule</span><span class="badge">Milestone-based</span></div>
+<div class="pdf-payment">
+<div class="pdf-payment-cell"><div class="left"><span class="stage">Project Commencement</span><span class="note">Advance before design work</span></div><div class="right"><span class="amt" id="pdfPay1">₹0</span><span class="pct">50%</span></div></div>
+<div class="pdf-payment-cell"><div class="left"><span class="stage">Design Approval</span><span class="note">After floor plan finalized</span></div><div class="right"><span class="amt" id="pdfPay2">₹0</span><span class="pct">40%</span></div></div>
+<div class="pdf-payment-cell"><div class="left"><span class="stage">Final Handover</span><span class="note">Before final delivery</span></div><div class="right"><span class="amt" id="pdfPay3">₹0</span><span class="pct">10%</span></div></div>
+</div>
+</div>
+
+<div class="pdf-section">
+<div class="pdf-section-title"><span>Estimated Delivery Timeline</span><span class="badge" id="pdfTimelineBadge">—</span></div>
+<div class="pdf-timeline">
+<div class="pdf-timeline-cell"><div class="timeline-row1"><div class="tlabel">Start</div><span class="tdays" id="pdfTlDayMin">D1</span></div><div class="tvalue" id="pdfTlMin">—</div><div class="tsub" id="pdfTlMetaMin">—</div></div>
+<div class="pdf-timeline-cell highlight"><div class="timeline-row1"><div class="tlabel">Typical</div><span class="tdays" id="pdfTlDayTypical">D—</span></div><div class="tvalue" id="pdfTlTypical">—</div><div class="tsub" id="pdfTlMetaTypical">—</div></div>
+<div class="pdf-timeline-cell"><div class="timeline-row1"><div class="tlabel">Latest</div><span class="tdays" id="pdfTlDayMax">D—</span></div><div class="tvalue" id="pdfTlMax">—</div><div class="tsub" id="pdfTlMetaMax">—</div></div>
+</div>
+
+<div class="pdf-svc-timeline" id="pdfTimelineChips" style="display:none;">
+<div class="pdf-svc-timeline-title">Time required per service (Min–Typ–Max days)</div>
+<div class="pdf-svc-timeline-grid" id="pdfTimelineChipsGrid"></div>
+<div class="pdf-svc-timeline-note">Services in the same phase run in parallel; total reflects the longest path.</div>
+</div>
+
+</div>
+
+<div class="pdf-section" id="pdfRoomSection" style="display:none;">
+<div class="pdf-section-title"><span>Floor-wise Room Requirements</span></div>
+<table class="pdf-table minimal"><thead><tr><th style="width:25%;">Floor</th><th>Client Requirements</th></tr></thead><tbody id="pdfRoomBody"></tbody></table>
+</div>
+
+<div class="pdf-section" id="pdfTermsSection">
+<div class="pdf-section-title"><span>Terms &amp; Conditions</span></div>
+<div class="pdf-terms"><ol>
+<li><strong>Scope:</strong> Only services listed in this quotation are included. Additional services quoted separately.</li>
+<li><strong>Revisions:</strong> Two (2) free minor revisions included; revisions beyond this shall attract applicable charges.</li>
+<li><strong>Validity:</strong> Revision requests within 7 days of design delivery; thereafter treated as a new project.</li>
+<li><strong>Site Visit:</strong> ₹1,000 per visit within 10 km of Athgarh; beyond 10 km, additional ₹25/km.</li>
+<li><strong>Site Info:</strong> Client responsible for accurate site details, measurements, and documents. Incorrect/incomplete information may cause delays and additional charges.</li>
+<li><strong>Payment &amp; Cancellation:</strong> Fees based on estimated area, adjusted for design-related changes. Payment as per schedule; final deliverables after full payment. On cancellation, completed work and incurred expenses adjusted against amount paid.</li>
+<li><strong>Delays:</strong> Client-side delays in information, approvals, feedback, or payment will extend the delivery timeline accordingly.</li>
+<li><strong>Service Type:</strong> This quotation is strictly for design and documentation services only.</li>
+<li><strong>Timeline Start:</strong> Delivery timeline begins only upon receipt of advance payment. Until then, no Proj No is issued and the timeline is not activated.</li>
+</ol></div>
+</div>
+
+<div class="pdf-section"><div style="font-size:7pt;color:var(--ink);line-height:1.25;padding:4px 0;"><strong>Client Acknowledgment</strong><br>I confirm that the information provided is accurate and I accept these Terms &amp; Conditions.</div></div>
+
+<div class="pdf-signatures">
+<div class="pdf-sig-block"><div class="pdf-sig-line"></div><div class="pdf-sig-label"><strong>Client Signature</strong>Name &amp; Date</div></div>
+<div class="pdf-sig-block"><div class="pdf-sig-line"></div><div class="pdf-sig-label"><strong>For KM Construction &amp; Interiors</strong>Authorised Signatory / Architect</div></div>
+</div>
+
+<div class="pdf-footer"><span>KM Construction &amp; Interiors · 017, Uttarachandi Road, Athgarh · +91 70088 09883 · kmconstructions99@gmail.com</span></div>
+<div class="pdf-draft-note" id="pdfDraftNote">Proj No and Advance Receipt will be issued upon receipt of the advance.</div>
+</div>
+
+<div class="pdf-doc pdf-receipt" id="pdfReceipt" hidden>
+<div class="pdf-letterhead">
+<div class="pdf-letterhead-left">
+<img src="https://raw.githubusercontent.com/Anhsirk151/kmconstruction-assets/52877915152457b9c850a50ac46049d545980b9f/KM%20Construction%20and%20interiors%20Logo%20new%2020253.png" alt="KM Construction">
+<div>
+<div class="pdf-company-name">KM Construction &amp; Interiors</div>
+<div class="pdf-company-tag">Architecture · Structure · Interiors · Approvals · Construction</div>
+<div class="pdf-company-details"><strong>Registered Office:</strong> 017, Uttarachandi Road, Athgarh<br><strong>Phone:</strong> +91 70088 09883 &nbsp;·&nbsp; <strong>Email:</strong> kmconstructions99@gmail.com</div>
+</div>
+</div>
+<div class="pdf-letterhead-right">
+<div class="pdf-receipt-title">ADVANCE RECEIPT</div>
+<div class="pdf-receipt-meta"><strong>Date:</strong> <span id="receiptDateText">—</span></div>
+<div class="pdf-receipt-meta"><strong>Receipt No:</strong> <span id="receiptNoText">—</span></div>
+<div class="pdf-receipt-meta"><strong>Quotation Ref:</strong> <span id="receiptRefText">—</span></div>
+</div>
+</div>
+<div class="pdf-parties">
+<div class="pdf-parties-block">
+<h4>Received From</h4>
+<div class="name" id="receiptClientName">—</div>
+<div class="line" id="receiptClientPhone">—</div>
+<div class="line" id="receiptClientAddress">—</div>
+</div>
+</div>
+<table class="pdf-table pdf-receipt-table">
+<tbody>
+<tr><td>Received with thanks</td><td id="receiptAmount">₹0</td></tr>
+<tr><td>Payment mode</td><td id="receiptPaymentMode">—</td></tr>
+<tr><td>Payment reference</td><td id="receiptPaymentRef">—</td></tr>
+<tr><td>Project total</td><td id="receiptProjectTotal">₹0</td></tr>
+<tr><td>Balance due on handover</td><td id="receiptBalance">₹0</td></tr>
+</tbody>
+</table>
+<div class="pdf-amount-words" id="receiptAmountWords">Rupees Zero Only</div>
+<div class="pdf-receipt-note">This is an advance receipt, not a GST tax invoice.</div>
+<div class="pdf-receipt-signature">For KM Construction &amp; Interiors — Authorised Signatory</div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const SVC={
+s_floorplan:{label:'Floor Plan Design (Vastu)',unit:'sqft',rate:5,phase:2,min:5,max:12},
+s_structural_basic:{label:'Basic Structural Design',unit:'sqft',rate:3,phase:4,min:3,max:7},
+s_mapping:{label:'Site & Structure Mapping',unit:'floor',rate:1000,phase:1,min:2,max:3},
+s_elec:{label:'Electrical & Lighting',unit:'sqft',rate:2,phase:6,min:3,max:7},
+s_plumbing:{label:'Plumbing & Drainage',unit:'sqft',rate:2,phase:6,min:3,max:7},
+s_3d_ext:{label:'3D Exterior Design / Elevation',unit:'level',rate:10500,phase:3,min:7,max:15},
+s_3d_int:{label:'Interior Design',unit:'custom',rate:0,phase:3,min:10,max:25},
+s_adv_struct:{label:'Advance Structural Design',unit:'sqft',rate:5,phase:5,min:8,max:15},
+s_boq:{label:'Quantity Estimation & BOQ',unit:'sqft',rate:2,phase:7,min:4,max:8},
+s_soil:{label:'Soil Testing and Report',unit:'fixed',rate:25000,phase:3,min:5,max:10},
+s_obpas:{label:'Building Plan Approval',unit:'sqft',rate:12,phase:3,min:8,max:15},
+s_bank:{label:'Bank Loan Estimate',unit:'floor',rate:1000,phase:3,min:1,max:3},
+s_turnkey:{label:'Turnkey Construction',unit:'sqft',rate:1700,phase:8,min:20,max:40,excludeFromCost:true}
+};
+const TK={Basic:1700,Standard:1900,Premium:2500};
+const PKG={basic:['s_floorplan','s_structural_basic'],standard:['s_floorplan','s_structural_basic','s_3d_ext'],complete:['s_floorplan','s_structural_basic','s_3d_ext','s_obpas','s_bank'],premium:['s_floorplan','s_structural_basic','s_3d_ext','s_elec','s_obpas','s_plumbing','s_bank']};
+const PAY={p1:0.5,p2:0.4,p3:0.1};
+const DEFAULTS={buildingType:'Residential',projectType:'New',plotFacing:'East',floorplanFloors:'G+1'};
+const INT_RATE_ROOM=7400;
+const INT_RATE_SQFT=45;
+const INT_STYLE_MULT={Modern:1,Minimalist:1,Traditional:1,Luxury:1.35,Industrial:1.1,Scandinavian:1.05};
+const MAP_BASE_SQFT=1742;
+const MAP_BASE_FEE=1000;
+const MAP_PER_SQFT=0.6;
+let sel=new Set(),tier='Basic',iMode='rooms',mMode='structure',aMode='auto',pdfMeta={ref:''};
+let lifecycle={status:'draft',projectId:'',receiptNo:'',advancePaid:0,paymentMode:'',paymentRef:'',paymentDate:''};
+const $=id=>document.getElementById(id);
+const $$=(s,c=document)=>Array.from(c.querySelectorAll(s));
+const FN=['Ground Floor','First Floor','Second Floor','Third Floor','Fourth Floor','Fifth Floor'];
+const fmt=n=>{const v=Number(n);return(!isFinite(v)||v<=0)?'₹0':'₹'+Math.round(v).toLocaleString('en-IN')};
+const fmtBalance=n=>{const v=Number(n);return!isFinite(v)?'₹0':v<0?'-₹'+Math.round(Math.abs(v)).toLocaleString('en-IN'):fmt(v)};
+const fmtD=d=>d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+const localToday=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const stampNow=()=>{const d=new Date();return d.getFullYear().toString().slice(-2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')};
+const indiaTimestamp=()=>{const d=new Date(Date.now()+330*60000);return d.toISOString().slice(0,-1)+'+05:30'};
+const displayDate=value=>{if(!value)return'—';const p=value.split('-').map(Number);return p.length===3?fmtD(new Date(p[0],p[1]-1,p[2])):'—'};
+const sf=v=>(v&&String(v).trim())?String(v).trim():'—';
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=v=>{const n=parseFloat(v);return isFinite(n)?n:0};
+const amountWords=value=>{
+const ones=['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+const tens=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+const underThousand=n=>{let out='';if(n>=100){out+=ones[Math.floor(n/100)]+' Hundred';n%=100;if(n)out+=' '}if(n>=20){out+=tens[Math.floor(n/10)];n%=10;if(n)out+=' '+ones[n]}else if(n)out+=ones[n];return out};
+let n=Math.max(0,Math.round(Number(value)||0)),out='';
+[[10000000,'Crore'],[100000,'Lakh'],[1000,'Thousand'],[1,'']].forEach(([size,label])=>{const part=Math.floor(n/size);if(part){out+=(out?' ':'')+(size===1?underThousand(part):underThousand(part)+' '+label);n%=size}});
+return'Rupees '+(out||'Zero')+' Only';
+};
+const fCount=()=>{const m=$('floorplan_floors').value.match(/\d+/);return m?parseInt(m[0],10):0};
+const eCount=()=>fCount()+1+($('basement_check').checked?1:0)+($('stilt_check').checked?1:0);
+const tBup=()=>num($('builtup_area_sqft').value)*eCount();
+const fLabel=()=>{const p=[];if($('basement_check').checked)p.push('B');if($('stilt_check').checked)p.push('S');p.push('G+'+fCount());return p.join('+')};
+
+function updateLifecycleUI(){
+const active=lifecycle.status==='active';
+const ref=$('pdfRefNo');
+ref.classList.toggle('active',active);
+const badge=$('lifecycleBadge');
+badge.classList.toggle('active',active);
+badge.textContent=active?'Status: Active · '+lifecycle.projectId:'Status: Draft';
+$('advanceButton').textContent=active?'Edit Advance':'Record Advance';
+$('cancelAdvanceButton').style.display=active?'':'none';
+$('pdfProjectId').style.display=active?'':'none';
+$('pdfProjectId').textContent=active?'Proj No: '+lifecycle.projectId:'';
+$('pdfDraftNote').hidden=active;
+$('pdfReceipt').hidden=!active;
+}
+
+function nextReceiptNumber(){
+const date=new Date();
+const receiptDate=date.getFullYear().toString().slice(-2)+String(date.getMonth()+1).padStart(2,'0')+String(date.getDate()).padStart(2,'0');
+const key='kmci_receipt_counter_'+receiptDate;
+const current=Number(localStorage.getItem(key)||'0');
+if(!Number.isInteger(current)||current<0||current>=999)throw new Error('The receipt number for today has reached its limit.');
+const next=current+1;
+localStorage.setItem(key,String(next));
+return'R'+receiptDate+String(next).padStart(3,'0');
+}
+
+function syncImportedCounter(identifier){
+const match=/^R(\d{6})(\d{3})$/.exec(identifier);
+if(match){
+const key='kmci_receipt_counter_'+match[1];
+const current=Number(localStorage.getItem(key)||'0');
+const imported=Number(match[2]);
+if(Number.isInteger(imported)&&imported>current)localStorage.setItem(key,String(imported));
+return;
+}
+const legacyMatch=/^KMCI\/RC\/(\d{4})\/(\d{3})$/.exec(identifier);
+if(!legacyMatch)return;
+const key='kmci_receipt_counter_'+legacyMatch[1];
+const current=Number(localStorage.getItem(key)||'0');
+const imported=Number(legacyMatch[2]);
+if(Number.isInteger(imported)&&imported>current)localStorage.setItem(key,String(imported));
+}
+
+function makeProjectId(){
+const d=new Date();
+const date=d.getFullYear().toString().slice(-2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+const time=String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0');
+return'KMCI/'+date+'/'+time;
+}
+
+function toggleAdvancePanel(){
+const panel=$('advancePanel'),opening=!panel.classList.contains('open');
+panel.classList.toggle('open',opening);
+if(opening){
+const{total}=calc();
+$('advanceAmount').value=lifecycle.status==='active'?lifecycle.advancePaid:String(Number((total*0.5).toFixed(2)));
+$('paymentMode').value=lifecycle.paymentMode;
+$('paymentRef').value=lifecycle.paymentRef;
+$('paymentDate').value=lifecycle.paymentDate||localToday();
+$('advancePanelError').style.display='none';
+panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+}
+
+function closeAdvancePanel(){$('advancePanel').classList.remove('open');$('advancePanelError').style.display='none'}
+
+function confirmAdvance(){
+const amount=num($('advanceAmount').value),mode=$('paymentMode').value,date=$('paymentDate').value;
+const error=$('advancePanelError');
+if(!(amount>0)){error.textContent='Enter an advance amount greater than zero.';error.style.display='block';return}
+if(!['UPI','Bank Transfer','Cash','Cheque'].includes(mode)){error.textContent='Select a valid payment mode.';error.style.display='block';return}
+const parsedDate=/^\d{4}-\d{2}-\d{2}$/.test(date)?new Date(date+'T12:00:00'):null;
+if(!parsedDate||Number.isNaN(parsedDate.getTime())||localDateValue(parsedDate)!==date){error.textContent='Enter a valid payment date.';error.style.display='block';return}
+if(!(calc().total>0)){error.textContent='Select services and calculate a project total before recording an advance.';error.style.display='block';return}
+let receiptNumber='';
+if(lifecycle.status!=='active'){
+try{
+receiptNumber=nextReceiptNumber();
+}catch(e){error.textContent='Could not generate receipt number: '+e.message;error.style.display='block';return}
+}
+if(lifecycle.status!=='active')lifecycle.projectId=makeProjectId();
+if(receiptNumber)lifecycle.receiptNo=receiptNumber;
+lifecycle.status='active';
+lifecycle.advancePaid=amount;
+lifecycle.paymentMode=mode;
+lifecycle.paymentRef=$('paymentRef').value.trim();
+lifecycle.paymentDate=date;
+updateLifecycleUI();pdf();closeAdvancePanel();
+}
+
+function cancelAdvance(){
+if(lifecycle.status!=='active')return;
+if(!confirm('Cancel the advance and revert this quote to draft?'))return;
+lifecycle={status:'draft',projectId:'',receiptNo:'',advancePaid:0,paymentMode:'',paymentRef:'',paymentDate:''};
+updateLifecycleUI();pdf();closeAdvancePanel();
+}
+
+function localDateValue(date){return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')}
+
+function typeValue(selectId,otherId){
+const value=$(selectId).value;
+return value==='Other'?($(otherId).value.trim()||'Other'):value;
+}
+
+function syncTypeFields(){
+[['building_type','buildingTypeOtherWrap'],['project_type','projectTypeOtherWrap']].forEach(([selectId,wrapId])=>{
+$(wrapId).style.display=$(selectId).value==='Other'?'flex':'none';
+});
+}
+
+function formatPhone(raw){
+const digits=String(raw||'').replace(/\D/g,'');
+let d=digits;
+if(d.startsWith('91')&&d.length>10) d=d.slice(2);
+d=d.slice(0,10);
+if(d.length<=5) return d;
+return d.slice(0,5)+' '+d.slice(5);
+}
+function phoneFull(raw){
+const d=String(raw||'').replace(/\D/g,'');
+return d.length===10 ? '+91 '+d.slice(0,5)+' '+d.slice(5) : (d ? '+91 '+formatPhone(d) : '');
+}
+
+function attachPhoneFormat(id){
+const el=$(id);if(!el)return;
+el.addEventListener('input',()=>{
+const cursorEnd=el.selectionStart===el.value.length;
+const d=el.value.replace(/\D/g,'').slice(0,10);
+let formatted=d;
+if(d.length>5) formatted=d.slice(0,5)+' '+d.slice(5);
+el.value=formatted;
+if(cursorEnd) el.setSelectionRange(el.value.length, el.value.length);
+});
+el.addEventListener('blur',()=>{
+const d=el.value.replace(/\D/g,'');
+if(d.length>5) el.value=d.slice(0,5)+' '+d.slice(5);
+});
+}
+
+function ctx(){
+const sq=num($('total_builtup_area_sqft').value),fl=eCount(),pl=num($('plot_area_sqft').value),bt=$('building_type').value,pt=$('project_type').value;
+$('ctx-area').textContent=sq>0?sq.toLocaleString()+' sq.ft':'— sq.ft';
+$('ctx-floors').textContent=fl+' floor'+(fl>1?'s':'');
+$('ctx-plot').textContent=pl>0?pl.toLocaleString()+' sq.ft':'— sq.ft';
+let tt=typeValue('building_type','building_type_other');if(pt)tt+=(tt?' · ':'')+typeValue('project_type','project_type_other');
+$('ctx-type').textContent=tt||'—';
+}
+
+function apprFields(){
+const ai=$('approval_area');
+if(aMode==='auto'){ai.value=$('total_builtup_area_sqft').value||'';ai.readOnly=true;ai.style.background='#f5f5f5'}
+else{ai.readOnly=false;ai.style.background='#fff'}
+}
+
+function fndWarn(){
+const w=$('foundationWarning'),s=$('structure_load_capacity');
+if(!w||!s)return;
+const m=s.value.match(/\+(\d+)/),cap=m?parseInt(m[1],10):0;
+w.style.display=(cap<fCount())?'inline':'none';
+}
+
+function loanDisp(){
+const el=$('loanDisplay');if(!el)return;
+const v=num($('loan_amount').value);
+el.textContent=v>0?'₹'+(v*100000).toLocaleString('en-IN')+' ('+v+' Lakh)':'—';
+}
+
+function syncCheckItems(){
+$$('.check-item').forEach(lbl=>{
+const cb=lbl.querySelector('input[type=checkbox]');
+if(cb) lbl.classList.toggle('active', cb.checked);
+});
+}
+
+function ariaSync(){
+$$('.chip, .toggle-chip').forEach(el=>{
+el.setAttribute('aria-pressed', el.classList.contains('active')?'true':'false');
+});
+}
+
+function recalc(){
+const l=num($('plot_length_ft').value),w=num($('plot_width_ft').value);
+$('plot_area_sqft').value=(l>0&&w>0)?Math.round(l*w):'';
+const t=tBup();$('total_builtup_area_sqft').value=t>0?Math.round(t):'';
+ctx();apprFields();fndWarn();loanDisp();renderQ();
+}
+
+function chipStates(){
+$$('#serviceChips .chip').forEach(c=>c.classList.toggle('active',sel.has(c.dataset.service)));
+let m=null;
+for(const p in PKG){const l=PKG[p];if(l.length===sel.size&&l.every(s=>sel.has(s))){m=p;break}}
+$$('#packageChips .chip[data-package]').forEach(c=>c.classList.toggle('active',c.dataset.package===m));
+$('mappingBox').style.display=sel.has('s_mapping')?'block':'none';
+$('extBox').style.display=sel.has('s_3d_ext')?'block':'none';
+$('interiorBox').style.display=sel.has('s_3d_int')?'block':'none';
+$('approvalBox').style.display=sel.has('s_obpas')?'block':'none';
+$('bankBox').style.display=sel.has('s_bank')?'block':'none';
+$('structuralBox').style.display=sel.has('s_structural_basic')?'block':'none';
+$('turnkeyBox').style.display=sel.has('s_turnkey')?'block':'none';
+ariaSync();
+}
+
+function calc(){
+const tSq=tBup(),fl=eCount(),rows=[];let sub=0,tk=0;
+Array.from(sel).forEach(id=>{
+const svc=SVC[id];if(!svc)return;
+let q=1,a=0,r=svc.rate,u=svc.unit,note='',flatRate=false;
+if(id==='s_turnkey'){r=TK[tier];q=tSq;a=q*r;u='sqft';tk=a;return}
+if(id==='s_mapping'){
+if(mMode==='structure'){const m=$('mapping_floors').value.match(/\+(\d+)/);q=m?parseInt(m[1],10)+1:1;r=1000;a=q*r;u='floor'}
+else{const da=num($('plot_area_doc').value);if(da>0){q=da;if(da<=MAP_BASE_SQFT){r=0;flatRate=true;a=MAP_BASE_FEE;note='Flat ₹1,000 (base)';u='fixed'}else{r=MAP_PER_SQFT;a=da*MAP_PER_SQFT;u='sqft'}}}
+}else if(id==='s_3d_ext'){
+const ext=$('elevation_level').value||'G+0',sty=$('facade_style').value||'Modern';
+const b=sty==='Classic'?12000:10500,inc=sty==='Classic'?0.25:0.2;
+const m=ext.match(/\+(\d+)/),fn=m?parseInt(m[1],10):0;
+let p=b;for(let i=0;i<fn;i++)p*=(1+inc);p=Math.round(p);
+q=1;r=p;a=p;u='design';
+}else if(id==='s_3d_int'){
+const mult=INT_STYLE_MULT[$('interior_style').value]||1;
+if(iMode==='rooms'){q=num($('interior_rooms').value);r=Math.round(INT_RATE_ROOM*mult);a=q*r;u='room'}
+else{q=num($('interior_area').value);r=Math.round(INT_RATE_SQFT*mult*100)/100;a=q*r;u='sqft'}
+}else if(id==='s_obpas'){
+let area=aMode==='auto'?tSq:num($('approval_area').value);
+const auth=$('approval_authority').value;
+if(auth==='Gram Panchayat'){r=5;a=area*5;u='sqft'}
+else if(auth){r=12;a=area*12;u='sqft'}else{r=0;a=0;u='sqft'}
+q=area;
+}else if(id==='s_soil'){q=1;r=25000;a=25000;u='fixed'}
+else if(id==='s_bank'){const m=$('loan_floors').value.match(/\+(\d+)/);q=m?parseInt(m[1],10)+1:1;r=1000;a=q*r;u='floor'}
+else if(svc.unit==='sqft'){q=tSq;a=q*r}
+else if(svc.unit==='floor'){q=fl;a=q*r}
+else if(svc.unit==='fixed'){q=1;a=r}
+if(a>0){rows.push({label:svc.label,unit:u==='fixed'?'—':u,rate:r,qty:q,amt:a,note,flatRate});sub+=a}
+});
+return{rows,sub,tk,total:sub+tk};
+}
+
+function timeline(){
+const ph={};
+Array.from(sel).forEach(id=>{const s=SVC[id];if(!s||s.excludeFromCost)return;if(!ph[s.phase])ph[s.phase]=[];ph[s.phase].push(s)});
+let mi=0,tp=0,ma=0;
+[1,2,3,4,5,6,7].forEach(p=>{const it=ph[p]||[];if(!it.length)return;mi+=Math.max(...it.map(s=>s.min));tp+=Math.max(...it.map(s=>Math.round((s.min+2*s.max)/3)));ma+=Math.max(...it.map(s=>s.max))});
+return{min:mi,typ:tp,max:ma};
+}
+
+function updateTimelineCards(start,tl){
+const stages=[
+{day:1,date:'pdfTlMin',marker:'pdfTlDayMin',meta:'pdfTlMetaMin'},
+{day:tl.typ,date:'pdfTlTypical',marker:'pdfTlDayTypical',meta:'pdfTlMetaTypical'},
+{day:tl.max,date:'pdfTlMax',marker:'pdfTlDayMax',meta:'pdfTlMetaMax'}
+];
+stages.forEach(stage=>{
+const date=stage.day>0?new Date(start):null;
+if(date)date.setDate(date.getDate()+stage.day-1);
+$(stage.marker).textContent=date?'D'+stage.day:'D—';
+$(stage.date).textContent=date?date.toLocaleDateString('en-IN',{day:'2-digit',month:'short'}):'—';
+$(stage.meta).textContent=date?date.toLocaleDateString('en-IN',{weekday:'short'})+' · W'+Math.ceil(stage.day/7):'—';
+});
+$('pdfTimelineBadge').textContent=tl.min?'Min '+tl.min+' days':'—';
+}
+
+function timelineDetail(){
+const out=[];
+Array.from(sel).forEach(id=>{
+const s=SVC[id];
+if(!s||s.excludeFromCost) return;
+const typ=Math.round((s.min+2*s.max)/3);
+out.push({label:s.label,min:s.min,typ,max:s.max,phase:s.phase});
+});
+out.sort((a,b)=> a.phase-b.phase || b.min-a.min);
+return out;
+}
+
+function buildDisplayRows(){
+const{rows,tk}=calc();
+const dr=[...rows];
+if(tk>0)dr.push({label:'Turnkey Construction — '+tier+' Package',unit:'sqft',rate:TK[tier],qty:tBup(),amt:tk,note:'',flatRate:false});
+return dr;
+}
+
+function renderQ(){
+const dr=buildDisplayRows();
+const{total}=calc();
+const b=$('quoteBody');
+if(!dr.length){b.innerHTML='<tr class="empty-row"><td colspan="6">Select services above to see estimate</td></tr>';$('grandTotal').textContent='₹0';pdf();return}
+b.innerHTML=dr.map((r,i)=>{
+const rateCell=r.flatRate?'—':r.rate.toLocaleString('en-IN');
+return `<tr><td>${i+1}</td><td>${esc(r.label)}${r.note?'<br><span class="note">'+esc(r.note)+'</span>':''}</td><td>${r.unit}</td><td class="right">${rateCell}</td><td class="right">${r.qty.toLocaleString('en-IN')}</td><td class="right">${fmt(r.amt)}</td></tr>`;
+}).join('');
+$('grandTotal').textContent=fmt(total);
+pdf();
+}
+
+function renderReceipt(total){
+$('receiptNoText').textContent=lifecycle.receiptNo||'—';
+$('receiptDateText').textContent=displayDate(lifecycle.paymentDate);
+$('receiptRefText').textContent=pdfMeta.ref.replace(/^REF:\s*/,'');
+$('receiptClientName').textContent=sf($('client_name').value);
+const phone=phoneFull($('phone_primary').value);
+$('receiptClientPhone').textContent=phone?'Phone: '+phone:'—';
+$('receiptClientAddress').textContent=sf($('client_address1').value);
+$('receiptAmount').textContent=fmt(lifecycle.advancePaid);
+$('receiptPaymentMode').textContent=sf(lifecycle.paymentMode);
+$('receiptPaymentRef').textContent=sf(lifecycle.paymentRef);
+$('receiptProjectTotal').textContent=fmt(total);
+$('receiptBalance').textContent=fmtBalance(total-lifecycle.advancePaid);
+$('receiptAmountWords').textContent=amountWords(lifecycle.advancePaid);
+}
+
+function pdf(){
+const now=new Date(),valid=new Date(now);valid.setDate(valid.getDate()+30);
+const tl=timeline();
+if(!pdfMeta.ref)pdfMeta.ref='REF: QT/'+stampNow();
+$('pdfRefNo').textContent=pdfMeta.ref;
+updateLifecycleUI();
+$('pdfDate').textContent=fmtD(now);$('pdfValid').textContent=fmtD(valid);
+updateTimelineCards(now,tl);
+$('pdfClientName').textContent=sf($('client_name').value);
+const phRaw=sf($('phone_primary').value),alRaw=sf($('phone_alternate').value),em=sf($('client_email').value);
+const ct=[];
+if(phRaw!=='—')ct.push('<strong>Phone:</strong> '+esc(phoneFull(phRaw)));
+if(alRaw!=='—')ct.push('<strong>Alt:</strong> '+esc(phoneFull(alRaw)));
+$('pdfClientContact').innerHTML=ct.length?ct.join(' &nbsp;·&nbsp; '):'—';
+$('pdfClientEmail').innerHTML='<strong>Email:</strong> '+esc(em);
+$('pdfClientAddress').innerHTML='<strong>Address:</strong> '+esc(sf($('client_address1').value));
+$('pdfBuildingType').textContent=sf(typeValue('building_type','building_type_other'));
+$('pdfProjectType').textContent=sf(typeValue('project_type','project_type_other'));
+$('pdfSiteAddress').textContent=sf($('site_location').value);
+const l=num($('plot_length_ft').value),w=num($('plot_width_ft').value);
+$('pdfPlotDim').textContent=(l&&w)?l+' × '+w+' ft':'—';
+$('pdfPlotArea').textContent=$('plot_area_sqft').value?$('plot_area_sqft').value+' sq.ft':'—';
+$('pdfFacing').textContent=sf($('plot_facing').value);
+$('pdfBuiltup').textContent=$('builtup_area_sqft').value?Math.round(num($('builtup_area_sqft').value))+' sq.ft':'—';
+$('pdfFloors').textContent=fLabel()+' ('+eCount()+' level'+(eCount()>1?'s':'')+')';
+$('pdfTotalBuiltup').textContent=$('total_builtup_area_sqft').value?$('total_builtup_area_sqft').value+' sq.ft':'—';
+$('pdfRoadWidth').textContent=$('road_width_ft').value?$('road_width_ft').value+' ft':'—';
+const sp=[];if($('basement_check').checked)sp.push('Basement');if($('stilt_check').checked)sp.push('Stilt');if($('lift_provision').checked)sp.push('Lift');
+$('pdfSpecial').textContent=sp.length?sp.join(', '):'None';
+$('pdfTimelineInline').textContent=tl.typ?tl.typ+' days (typical)':'—';
+const{rows,sub,tk,total}=calc();
+renderReceipt(total);
+const dr=[...rows];
+if(tk>0)dr.push({label:'Turnkey Construction — '+tier+' Package',unit:'sqft',rate:TK[tier],qty:tBup(),amt:tk,note:'',flatRate:false});
+const b=$('pdfQuoteBody');
+if(!dr.length){
+b.innerHTML='<tr class="empty-note"><td colspan="6">No services selected</td></tr>';
+$('pdfTotal').textContent='₹0';$('pdfSvcCount').textContent='0 services';$('pdfSubtotalRow').style.display='none';
+$('pdfPay1').textContent=$('pdfPay2').textContent=$('pdfPay3').textContent='₹0';
+$('pdfConstructionSection').style.display='none';pdfRoomNotes();
+$('pdfTimelineChips').style.display='none';
+$('pdfTimelineBadge').textContent='—';
+return;
+}
+b.innerHTML=dr.map((r,i)=>{
+const rateCell=r.flatRate?'—':r.rate.toLocaleString('en-IN');
+return `<tr><td>${i+1}</td><td>${esc(r.label)}${r.note?'<br><em style="font-size:7pt;color:#6b6b6b;">'+esc(r.note)+'</em>':''}</td><td>${r.unit}</td><td class="right">${rateCell}</td><td class="right">${r.qty.toLocaleString('en-IN')}</td><td class="right">${fmt(r.amt)}</td></tr>`;
+}).join('');
+if(tk>0&&sub>0){$('pdfSubtotalRow').style.display='';$('pdfSubtotal').textContent=fmt(sub)}else{$('pdfSubtotalRow').style.display='none'}
+$('pdfTotal').textContent=fmt(total);
+$('pdfSvcCount').textContent=dr.length+' service'+(dr.length>1?'s':'');
+$('pdfPay1').textContent=fmt(total*PAY.p1);
+$('pdfPay2').textContent=fmt(total*PAY.p2);
+$('pdfPay3').textContent=fmt(total*PAY.p3);
+const details=timelineDetail();
+if(details.length){
+$('pdfTimelineChips').style.display='';
+$('pdfTimelineChipsGrid').innerHTML=details.map(d=>`
+<span class="pdf-svc-pill"><span class="name">${esc(d.label)}</span><span class="time">${d.min}<span class="sep">·</span>${d.typ}<span class="sep">·</span>${d.max}d</span></span>
+`).join('');
+}else{
+$('pdfTimelineChips').style.display='none';
+}
+pdfRoomNotes();
+if(tk>0){
+const ga=num($('builtup_area_sqft').value),tS=tBup(),fl=eCount(),sc=ga*450;
+$('pdfConstructionSection').style.display='block';
+$('pdfConstructionBadge').textContent=tier+' Package · ₹'+TK[tier]+'/sq.ft';
+$('pdfConstructionBody').innerHTML=[{id:'Basic',r:1700},{id:'Standard',r:1900},{id:'Premium',r:2500}].map(p=>{
+const su=tS*p.r,tc=sc+su,dur=tS>0?Math.ceil(tS/500+(fl-1)*0.6+5)+' months':'—';
+return`<tr ${p.id===tier?'class="selected-row"':''}><td><strong>${p.id}</strong> @ ₹${p.r.toLocaleString('en-IN')}/sq.ft</td><td class="right">${fmt(sc)}</td><td class="right">${fmt(su)}</td><td class="right">${fmt(tc)}</td><td class="right">${dur}</td></tr>`
+}).join('');
+}else{$('pdfConstructionSection').style.display='none'}
+}
+
+function pdfRoomNotes(){
+const rd=[];
+$$('#roomList .room-row').forEach(r=>{const lb=r.dataset.floor||'',v=r.querySelector('textarea')?.value?.trim()||'';if(v)rd.push({lb,v})});
+const n=$('generalNotes').value.trim();
+const roomRows=rd.map(r=>`<tr><td><strong>${esc(r.lb)}</strong></td><td>${esc(r.v).replace(/\n/g,'<br>')}</td></tr>`).join('');
+const notesRow=n?`<tr class="pdf-room-notes-row"><td><strong>Notes</strong></td><td>${esc(n).replace(/\n/g,'<br>')}</td></tr>`:'';
+$('pdfRoomBody').innerHTML=roomRows+notesRow;
+$('pdfRoomSection').style.display=rd.length||n?'block':'none';
+}
+
+function popDrops(){
+['elevation_level','loan_floors','structure_load_capacity'].forEach(id=>{
+const s=$(id);if(!s)return;s.innerHTML='';
+for(let i=0;i<=4;i++){const o=document.createElement('option');o.value='G+'+i;o.textContent='G+'+i;if(i===0)o.selected=true;s.appendChild(o)}
+});
+const s=$('structure_load_capacity');if(s)s.value=$('floorplan_floors').value;
+fndWarn();
+}
+
+function buildRoomRow(index, value){
+const name=FN[index]||('Floor '+(index+1));
+const row=document.createElement('div');
+row.className='room-row';
+row.dataset.floor=name;
+row.dataset.index=index;
+row.innerHTML=`<span class="floor-label"><span class="floor-name">${esc(name)}</span>${index>=2?'<button type="button" class="del" aria-label="Delete floor">×</button>':''}</span><textarea rows="2" placeholder="e.g. 2 bedrooms, kitchen, living room…"></textarea>`;
+const ta=row.querySelector('textarea');
+if(value) ta.value=value;
+ta.addEventListener('input',()=>{pdf();});
+const d=row.querySelector('.del');
+if(d) d.addEventListener('click',rmRoom);
+return row;
+}
+
+function renderRooms(){
+const c=$('roomList');
+c.innerHTML='';
+for(let i=0;i<2;i++){ c.appendChild(buildRoomRow(i,'')); }
+}
+
+function relabelRows(){
+const rows=$$('#roomList .room-row');
+rows.forEach((rw,i)=>{
+const name=FN[i]||('Floor '+(i+1));
+rw.dataset.floor=name;
+rw.dataset.index=i;
+const lbl=rw.querySelector('.floor-label');
+if(!lbl) return;
+const hasDel=!!lbl.querySelector('.del');
+const needsDel=i>=2;
+if(needsDel && !hasDel){
+const btn=document.createElement('button');
+btn.type='button';btn.className='del';btn.setAttribute('aria-label','Delete floor');
+btn.textContent='×';
+btn.addEventListener('click',rmRoom);
+lbl.appendChild(btn);
+}else if(!needsDel && hasDel){
+lbl.querySelector('.del').remove();
+}
+const nameSpan=lbl.querySelector('.floor-name');
+if(nameSpan) nameSpan.textContent=name;
+});
+}
+
+function addRoom(){
+const c=$('roomList');
+const count=c.querySelectorAll('.room-row').length;
+if(count>=FN.length){alert('Maximum floors reached.');return}
+const newRow=buildRoomRow(count,'');
+c.appendChild(newRow);
+newRow.querySelector('textarea').focus();
+pdf();
+}
+
+function rmRoom(e){
+e.preventDefault();
+const c=$('roomList');
+const count=c.querySelectorAll('.room-row').length;
+if(count<=2){alert('At least 2 floors are required.');return}
+const r=e.currentTarget.closest('.room-row');
+if(r) r.remove();
+relabelRows();
+pdf();
+}
+
+function valid(){
+const er=[];
+if($('client_name').value.trim().length<2)er.push('Please enter your full name (minimum 2 characters)');
+const ph=$('phone_primary').value.replace(/\D/g,'');
+const pd=ph.startsWith('91')&&ph.length>10?ph.slice(-10):ph;
+if(!/^[6-9]\d{9}$/.test(pd))er.push('Please enter a valid 10-digit phone number');
+const em=$('client_email').value.trim();
+if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))er.push('Please enter a valid email address');
+if(!$('building_type').value)er.push('Please select a Building Type');
+if(!$('project_type').value)er.push('Please select a Project Type');
+if($('building_type').value==='Other'&&!$('building_type_other').value.trim())er.push('Please specify the Building Type');
+if($('project_type').value==='Other'&&!$('project_type_other').value.trim())er.push('Please specify the Project Type');
+if(sel.size===0)er.push('Please select at least one service or package');
+if(sel.has('s_floorplan')){
+if(!(num($('builtup_area_sqft').value)>0))er.push('Floorplan Design requires valid Built-up Area per Floor');
+if(!(num($('plot_length_ft').value)>0))er.push('Floorplan Design requires valid Plot Length');
+if(!(num($('plot_width_ft').value)>0))er.push('Floorplan Design requires valid Plot Width');
+}
+if(sel.has('s_3d_int')){
+if(iMode==='rooms'&&!(num($('interior_rooms').value)>0))er.push('Interior Design requires number of rooms');
+if(iMode==='area'&&!(num($('interior_area').value)>0))er.push('Interior Design requires area');
+}
+if(sel.has('s_obpas')){
+if(!$('approval_authority').value)er.push('Building Plan Approval requires Approval Authority');
+if(aMode==='manual'&&!(num($('approval_area').value)>0))er.push('Building Plan Approval requires Total Built-up Area');
+}
+if(sel.has('s_bank')){if(!(num($('loan_amount').value)>0))er.push('Bank Loan Estimate requires Loan Amount')}
+if(sel.has('s_mapping')&&mMode==='plot'){if(!(num($('plot_area_doc').value)>0))er.push('Site Mapping requires Plot Area (as per document)')}
+if(sel.has('s_structural_basic')){
+const s=$('structure_load_capacity'),m=s.value.match(/\+(\d+)/),cap=m?parseInt(m[1],10):0;
+if(cap<fCount())er.push('Foundation capacity must be ≥ project floors ('+fCount()+')');
+}
+if(sel.has('s_turnkey')&&!(num($('builtup_area_sqft').value)>0))er.push('Turnkey Construction requires Built-up Area per Floor');
+return er;
+}
+
+function showValid(er){
+const s=$('validationSummary'),l=$('validationList');
+if(!s||!l)return;
+if(!er.length){s.style.display='none';return}
+s.style.display='block';
+l.innerHTML=er.map(e=>'<li>• '+esc(e)+'</li>').join('');
+}
+
+function submit(){
+const er=valid();showValid(er);
+if(er.length){alert('Please fix the highlighted fields before submitting.');window.scrollTo({top:0,behavior:'smooth'});return}
+recalc();pdf();
+alert('Quote submitted successfully! We will contact you shortly.');
+setTimeout(()=>window.print(),100);
+}
+
+function resetFormState(){
+sel.clear();tier='Basic';iMode='rooms';mMode='structure';aMode='auto';pdfMeta={ref:''};
+lifecycle={status:'draft',projectId:'',receiptNo:'',advancePaid:0,paymentMode:'',paymentRef:'',paymentDate:''};
+closeAdvancePanel();updateLifecycleUI();
+$$('#turnkeyToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.tier==='Basic'));
+$$('#interiorToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.interior==='rooms'));
+$$('#mappingToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.mapping==='structure'));
+$$('#approvalToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.approval==='auto'));
+$('interiorRoomsDiv').classList.remove('field-hidden');
+$('interiorAreaDiv').classList.add('field-hidden');
+$('mappingStructureFields').style.display='flex';
+$('mappingPlotFields').style.display='none';
+$('pdfRefNo').textContent='REF: —';
+}
+
+function applyDefaults(){
+$('building_type').value=DEFAULTS.buildingType;
+$('project_type').value=DEFAULTS.projectType;
+syncTypeFields();
+$('plot_facing').value=DEFAULTS.plotFacing;
+$('floorplan_floors').value=DEFAULTS.floorplanFloors;
+}
+
+function clearAll(){
+if(!confirm('Clear all form entries?'))return;
+$$('input, select, textarea').forEach(el=>{
+if(el.type==='checkbox'||el.type==='radio')el.checked=false;
+else if(el.tagName==='SELECT')el.selectedIndex=0;
+else if(!el.readOnly)el.value='';
+el.classList.remove('error','success');
+});
+applyDefaults();
+syncCheckItems();
+resetFormState();
+renderRooms();chipStates();recalc();showValid([]);
+}
+
+function loadDemo(){
+if(!confirm('Load sample data? This will overwrite any current entries.'))return;
+$$('input, select, textarea').forEach(el=>{
+if(el.type==='checkbox'||el.type==='radio')el.checked=false;
+else if(el.tagName==='SELECT')el.selectedIndex=0;
+else if(!el.readOnly)el.value='';
+el.classList.remove('error','success');
+});
+resetFormState();
+
+$('client_name').value='Rahul Sharma';
+$('phone_primary').value='98765 43210';
+$('phone_alternate').value='94370 12345';
+$('client_email').value='rahul.sharma@example.com';
+$('client_address1').value='Flat 3B, Surya Residency, Link Road, Cuttack, Odisha - 753012';
+$('site_location').value='Plot No. 42, Uttarachandi Road, Athgarh, Cuttack, Odisha - 754029';
+$('building_type').value='Residential';
+$('project_type').value='New';
+syncTypeFields();
+$('plot_length_ft').value='40';
+$('plot_width_ft').value='30';
+$('plot_facing').value='East';
+$('builtup_area_sqft').value='1000';
+$('floorplan_floors').value='G+1';
+$('road_width_ft').value='20';
+$('basement_check').checked=false;
+$('stilt_check').checked=true;
+$('lift_provision').checked=true;
+syncCheckItems();
+PKG.premium.forEach(s=>sel.add(s));
+mMode='structure';
+$('mapping_floors').value='G+1';
+$('structure_type').value='RCC';
+$('elevation_level').value='G+1';
+$('facade_style').value='Modern';
+iMode='rooms';
+$('interior_rooms').value='8';
+$('interior_style').value='Modern';
+aMode='auto';
+$('approval_authority').value='Gram Panchayat';
+$('loan_amount').value='25';
+$('loan_floors').value='G+1';
+$('structure_load_capacity').value='G+2';
+tier='Standard';
+const c=$('roomList');
+c.innerHTML='';
+const roomTexts=[
+'2 bedrooms, 1 master bedroom with attached bath, modular kitchen, living room, dining area, pooja room, 2 bathrooms, balcony.',
+'1 master bedroom with attached bath, 2 kids bedrooms, 1 common bathroom, family lounge, study room, 2 balconies.',
+'Terrace garden, solar panel provision, water tank, utility area.'
+];
+for(let i=0;i<3;i++){
+c.appendChild(buildRoomRow(i,roomTexts[i]));
+}
+$('generalNotes').value='Please ensure Vastu compliance for main door (East facing) and kitchen (South-East). Prefer modern minimalist interior with warm wooden tones. Include provision for home automation and EV charging point in stilt parking.';
+$$('#turnkeyToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.tier===tier));
+$$('#interiorToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.interior===iMode));
+$$('#mappingToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.mapping===mMode));
+$$('#approvalToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.approval===aMode));
+chipStates();
+recalc();
+renderQ();
+pdf();
+window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function exportAll(){
+const{rows,sub,tk,total}=calc();
+const tl=timeline();
+const tld=timelineDetail();
+const form={};
+$$('.app input[id], .app select[id], .app textarea[id]').forEach(el=>{
+if(['advanceAmount','paymentMode','paymentRef','paymentDate'].includes(el.id))return;
+form[el.id]=el.type==='checkbox'?el.checked:el.value;
+});
+const cleanName=$('client_name').value.replace(/\s+/g,'').replace(/[^a-zA-Z0-9]/g,'').slice(0,24)||'Unknown';
+const refStamp=(pdfMeta.ref.match(/QT\/(\d{10})/)||[])[1]||stampNow();
+const data={
+_meta:{app:'KM Construction Quotation Tool',version:'2.0',savedOn:indiaTimestamp(),status:lifecycle.status,summary:sf($('client_name').value)+' · '+fLabel()+' · Total '+fmt(total)+' · Advance '+fmt(lifecycle.advancePaid)},
+projectId:lifecycle.projectId,receiptNo:lifecycle.receiptNo,advancePaid:lifecycle.advancePaid,paymentMode:lifecycle.paymentMode,paymentRef:lifecycle.paymentRef,paymentDate:lifecycle.paymentDate,
+refNo:pdfMeta.ref,date:$('pdfDate').textContent,form,
+client:{name:$('client_name').value,phone:phoneFull($('phone_primary').value),phoneAlt:phoneFull($('phone_alternate').value),email:$('client_email').value,presentAddress:$('client_address1').value,siteLocation:$('site_location').value},
+project:{buildingType:$('building_type').value,buildingTypeOther:$('building_type').value==='Other'?$('building_type_other').value.trim():'',projectType:$('project_type').value,projectTypeOther:$('project_type').value==='Other'?$('project_type_other').value.trim():'',plotLength:num($('plot_length_ft').value),plotWidth:num($('plot_width_ft').value),plotArea:num($('plot_area_sqft').value),facing:$('plot_facing').value,builtupArea:num($('builtup_area_sqft').value),floors:$('floorplan_floors').value,effectiveFloors:eCount(),totalBuiltup:num($('total_builtup_area_sqft').value),roadWidth:num($('road_width_ft').value),special:[$('basement_check').checked&&'Basement',$('stilt_check').checked&&'Stilt',$('lift_provision').checked&&'Lift'].filter(Boolean)},
+services:Array.from(sel),serviceDetails:rows,turnkeyTier:tier,interiorMode:iMode,mappingMode:mMode,approvalMode:aMode,timeline:tl,timelinePerService:tld,
+pricing:{serviceSubtotal:sub,turnkeyTotal:tk,total:total},
+payment:{stage1:{label:'Project Commencement',pct:50,amount:total*PAY.p1,note:'Advance before design work'},stage2:{label:'Design Approval',pct:40,amount:total*PAY.p2,note:'After floor plan finalized'},stage3:{label:'Final Handover',pct:10,amount:total*PAY.p3,note:'Before final delivery'}},
+rooms:$$('#roomList .room-row').map(r=>({floor:r.dataset.floor||'',notes:r.querySelector('textarea')?.value||''})),
+generalNotes:$('generalNotes').value
+};
+const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a');a.href=url;a.download='QT/'+refStamp+' '+cleanName+'.json';
+document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+
+function pickImport(){$('importFile').click()}
+
+function setImportedForm(data){
+const client=data.client,project=data.project,form=data.form&&typeof data.form==='object'?data.form:{};
+if(data.form){
+Object.entries(form).forEach(([id,value])=>{
+const el=$(id);
+if(!el||['advanceAmount','paymentMode','paymentRef','paymentDate'].includes(id))return;
+if(el.type==='checkbox')el.checked=Boolean(value);
+else el.value=value==null?'':String(value);
+});
+}else{
+const legacy={
+client_name:client.name,phone_primary:client.phone,phone_alternate:client.phoneAlt,client_email:client.email,
+client_address1:client.presentAddress,site_location:client.siteLocation,
+building_type:project.buildingType,building_type_other:project.buildingTypeOther,
+project_type:project.projectType,project_type_other:project.projectTypeOther,
+plot_length_ft:project.plotLength,plot_width_ft:project.plotWidth,plot_facing:project.facing,
+builtup_area_sqft:project.builtupArea,floorplan_floors:project.floors,road_width_ft:project.roadWidth
+};
+Object.entries(legacy).forEach(([id,value])=>{if($(id)&&value!=null)$(id).value=String(value)});
+const special=Array.isArray(project.special)?project.special:[];
+['basement_check','stilt_check','lift_provision'].forEach((id,i)=>{$(id).checked=special.includes(['Basement','Stilt','Lift'][i])});
+}
+['phone_primary','phone_alternate'].forEach(id=>{if($(id))$(id).value=formatPhone($(id).value)});
+$$('.app input, .app select, .app textarea').forEach(el=>el.classList.remove('error','success'));
+sel=new Set(Array.isArray(data.services)?data.services.filter(id=>Object.prototype.hasOwnProperty.call(SVC,id)):[]);
+tier=Object.prototype.hasOwnProperty.call(TK,data.turnkeyTier)?data.turnkeyTier:'Basic';
+iMode=['rooms','area'].includes(data.interiorMode)?data.interiorMode:'rooms';
+mMode=['structure','plot'].includes(data.mappingMode)?data.mappingMode:'structure';
+aMode=['auto','manual'].includes(data.approvalMode)?data.approvalMode:'auto';
+$$('#turnkeyToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.tier===tier));
+$$('#interiorToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.interior===iMode));
+$$('#mappingToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.mapping===mMode));
+$$('#approvalToggle .toggle-chip').forEach(c=>c.classList.toggle('active',c.dataset.approval===aMode));
+$('interiorRoomsDiv').classList.toggle('field-hidden',iMode!=='rooms');
+$('interiorAreaDiv').classList.toggle('field-hidden',iMode!=='area');
+$('mappingStructureFields').style.display=mMode==='structure'?'flex':'none';
+$('mappingPlotFields').style.display=mMode==='plot'?'flex':'none';
+syncTypeFields();syncCheckItems();chipStates();apprFields();
+const roomData=Array.isArray(data.rooms)?data.rooms:[];
+$('roomList').innerHTML='';
+if(roomData.length){
+roomData.slice(0,FN.length).forEach((room,index)=>{
+const row=buildRoomRow(index,room.notes||'');
+if(room.floor){row.dataset.floor=String(room.floor);row.querySelector('.floor-name').textContent=String(room.floor)}
+$('roomList').appendChild(row);
+});
+}else renderRooms();
+if(typeof data.generalNotes==='string')$('generalNotes').value=data.generalNotes;
+}
+
+async function importFile(file){
+if(!file)return;
+try{
+const data=JSON.parse(await file.text());
+if(!data||typeof data!=='object'||!data.client||typeof data.client!=='object'||!data.project||typeof data.project!=='object')throw new Error('The JSON must contain client and project objects.');
+if(!confirm('Loading this file will overwrite the current form. Continue?'))return;
+if(data.receiptNo)syncImportedCounter(String(data.receiptNo));
+setImportedForm(data);
+pdfMeta={ref:String(data.refNo||'')};
+if(pdfMeta.ref&&!/^REF:\s*/.test(pdfMeta.ref))pdfMeta.ref='REF: '+pdfMeta.ref;
+lifecycle=data.projectId?{
+status:'active',projectId:String(data.projectId),receiptNo:String(data.receiptNo||''),
+advancePaid:num(data.advancePaid),paymentMode:String(data.paymentMode||''),
+paymentRef:String(data.paymentRef||''),paymentDate:String(data.paymentDate||'')
+}:{status:'draft',projectId:'',receiptNo:'',advancePaid:0,paymentMode:'',paymentRef:'',paymentDate:''};
+updateLifecycleUI();recalc();renderQ();showValid([]);closeAdvancePanel();
+$('advanceAmount').value=lifecycle.advancePaid||'';
+$('paymentMode').value=lifecycle.paymentMode;
+$('paymentRef').value=lifecycle.paymentRef;
+$('paymentDate').value=lifecycle.paymentDate||localToday();
+alert('Quote loaded successfully.');
+}catch(e){alert('Could not load this quote: '+e.message)}
+}
+
+function printPdf(){
+const er=valid();
+if(er.length){showValid(er);if(!confirm('Some required fields are missing. Print anyway?'))return}
+recalc();pdf();setTimeout(()=>window.print(),100);
+}
+
+function init(){
+popDrops();renderRooms();chipStates();syncCheckItems();
+attachPhoneFormat('phone_primary');
+attachPhoneFormat('phone_alternate');
+applyDefaults();
+$('structure_load_capacity').value=$('floorplan_floors').value;
+ $('paymentDate').value=localToday();
+$('importFile').addEventListener('change',e=>{importFile(e.target.files[0]);e.target.value=''});
+recalc();renderQ();pdf();ctx();
+}
+
+$$('#serviceChips .chip').forEach(chip=>{
+chip.addEventListener('click',()=>{
+const id=chip.dataset.service;
+if(sel.has(id)){sel.delete(id);if(id==='s_floorplan')sel.delete('s_structural_basic')}
+else{
+if(id==='s_structural_basic'&&!sel.has('s_floorplan')){alert('Basic Structural Design requires Floorplan Design to be selected first.');return}
+sel.add(id);
+if(id==='s_adv_struct'){sel.delete('s_structural_basic');sel.add('s_soil');alert('Advance Structural Design replaces Basic Structural Design and includes Soil Testing.')}
+}
+chipStates();renderQ();
+});
+});
+
+$$('#packageChips .chip[data-package]').forEach(chip=>{
+chip.addEventListener('click',()=>{
+const p=chip.dataset.package,l=PKG[p];if(!l)return;
+const same=l.length===sel.size&&l.every(s=>sel.has(s));
+if(same)sel.clear();else sel=new Set(l);
+chipStates();renderQ();
+});
+});
+
+$('clearPackages').addEventListener('click',()=>{sel.clear();chipStates();renderQ()});
+
+$$('#turnkeyToggle .toggle-chip').forEach(c=>c.addEventListener('click',()=>{tier=c.dataset.tier;$$('#turnkeyToggle .toggle-chip').forEach(x=>x.classList.toggle('active',x===c));ariaSync();renderQ()}));
+
+$$('#interiorToggle .toggle-chip').forEach(c=>c.addEventListener('click',()=>{
+iMode=c.dataset.interior;$$('#interiorToggle .toggle-chip').forEach(x=>x.classList.toggle('active',x===c));
+$('interiorRoomsDiv').classList.toggle('field-hidden',iMode!=='rooms');
+$('interiorAreaDiv').classList.toggle('field-hidden',iMode!=='area');
+ariaSync();renderQ();
+}));
+
+$$('#mappingToggle .toggle-chip').forEach(c=>c.addEventListener('click',()=>{
+mMode=c.dataset.mapping;$$('#mappingToggle .toggle-chip').forEach(x=>x.classList.toggle('active',x===c));
+$('mappingStructureFields').style.display=mMode==='structure'?'flex':'none';
+$('mappingPlotFields').style.display=mMode==='plot'?'flex':'none';
+ariaSync();renderQ();
+}));
+
+$$('#approvalToggle .toggle-chip').forEach(c=>c.addEventListener('click',()=>{
+aMode=c.dataset.approval;$$('#approvalToggle .toggle-chip').forEach(x=>x.classList.toggle('active',x===c));
+apprFields();ariaSync();renderQ();
+}));
+
+['basement_check','stilt_check','lift_provision'].forEach(id=>{
+const cb=$(id);
+if(cb) cb.addEventListener('change',()=>{syncCheckItems();recalc()});
+});
+
+let tmr=null;
+function sched(){if(tmr)clearTimeout(tmr);tmr=setTimeout(recalc,80)}
+
+document.addEventListener('input',e=>{
+if(e.target.matches('input, select, textarea')){
+sched();
+if(e.target.id==='loan_amount')loanDisp();
+if(e.target.id==='structure_load_capacity')fndWarn();
+}
+});
+
+document.addEventListener('change',e=>{
+if(e.target.matches('input, select, textarea')){
+if(e.target.id==='building_type'||e.target.id==='project_type')syncTypeFields();
+recalc();
+if(e.target.id==='loan_amount')loanDisp();
+if(e.target.id==='structure_load_capacity')fndWarn();
+}
+});
+
+window.addEventListener('beforeprint',()=>{recalc();pdf()});
+
+window.KMCI={init,clearForm:clearAll,validateAndSubmit:submit,exportData:exportAll,printPdf,addRoomRow:addRoom,loadDemo,pickImport,toggleAdvancePanel,closeAdvancePanel,confirmAdvance,cancelAdvance};
+
+document.addEventListener('DOMContentLoaded',init);
+})();
+</script>
+</body>
+</html>
